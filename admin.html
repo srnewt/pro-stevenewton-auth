@@ -199,7 +199,7 @@
               <span id="userDisplayName">User</span>
             </a>
             <ul class="dropdown-menu dropdown-menu-end">
-              <li><a class="dropdown-item" href="#"><i class="fas fa-user me-2"></i>My profile</a></li>
+              <li><a class="dropdown-item" href="#" onclick="openProfileModal()"><i class="fas fa-user me-2"></i>My profile</a></li>
               <li><a class="dropdown-item" href="#"><i class="fas fa-cog me-2"></i>Settings</a></li>
               <li><hr class="dropdown-divider" /></li>
               <li><a class="dropdown-item" href="#" id="logoutBtn"><i class="fas fa-sign-out-alt me-2"></i>Logout</a></li>
@@ -427,7 +427,10 @@
             
             <!-- Full-frame Notion Embed -->
             <div class="notion-embed-container">
-              <iframe src="https://229k3j2mwzrkxr1.embednotionpage.com/?source=copy_link"></iframe>
+              <iframe
+                src="https://229k3j2mwzrkxr1.embednotionpage.com/?source=copy_link"
+                style="width: 100%; height: 100%; border: none !important; padding: 0;"
+              ></iframe>
             </div>
           </div>
         </div>
@@ -651,6 +654,9 @@
           new Date(user.metadata.creationTime).toLocaleDateString();
       }
 
+      // Store user registration for admin management
+      storeUserRegistration(user);
+
       isAdmin = ADMIN_USERS.includes(user.email);
       if (isAdmin) {
         document.getElementById('adminSection').style.display = 'block';
@@ -812,8 +818,92 @@
     };
 
     window.refreshUserList = function() {
-      // Admin functionality placeholder
+      if (!isAdmin) {
+        showAlert('Admin access required', 'danger');
+        return;
+      }
+      
+      const userMemberships = JSON.parse(localStorage.getItem('userMemberships') || '{}');
+      const registeredUsers = JSON.parse(localStorage.getItem('registeredUsers') || '[]');
+      
+      const tableBody = document.getElementById('userManagementTable');
+      if (!tableBody) return;
+      
+      if (registeredUsers.length === 0) {
+        tableBody.innerHTML = '<tr><td colspan="5" class="text-center text-muted">No users found</td></tr>';
+        return;
+      }
+      
+      tableBody.innerHTML = '';
+      
+      registeredUsers.forEach(user => {
+        const membership = userMemberships[user.uid] || 'free';
+        const row = `
+          <tr>
+            <td>${user.email}</td>
+            <td>${user.displayName || 'Not set'}</td>
+            <td>
+              <select onchange="changeMembershipLevel('${user.uid}', this.value)" class="form-select form-select-sm">
+                <option value="free" ${membership === 'free' ? 'selected' : ''}>Free</option>
+                <option value="pro1" ${membership === 'pro1' ? 'selected' : ''}>Pro 1</option>
+                <option value="pro2" ${membership === 'pro2' ? 'selected' : ''}>Pro 2</option>
+                <option value="pro3" ${membership === 'pro3' ? 'selected' : ''}>Pro 3</option>
+              </select>
+            </td>
+            <td>${new Date(user.createdAt).toLocaleDateString()}</td>
+            <td>
+              <button class="btn btn-sm btn-outline-primary" onclick="viewUserDetails('${user.uid}')">
+                <i class="fas fa-eye"></i>
+              </button>
+            </td>
+          </tr>
+        `;
+        tableBody.insertAdjacentHTML('beforeend', row);
+      });
     };
+
+    window.changeMembershipLevel = function(userId, newLevel) {
+      if (!isAdmin) {
+        showAlert('Admin access required', 'danger');
+        return;
+      }
+      
+      const userMemberships = JSON.parse(localStorage.getItem('userMemberships') || '{}');
+      userMemberships[userId] = newLevel;
+      localStorage.setItem('userMemberships', JSON.stringify(userMemberships));
+      
+      // If changing current user's membership
+      if (auth.currentUser && auth.currentUser.uid === userId) {
+        currentUserMembership = newLevel;
+        updateMembershipUI();
+      }
+      
+      showAlert('Membership updated successfully!', 'success');
+    };
+
+    window.viewUserDetails = function(userId) {
+      showAlert('User details feature coming soon', 'info');
+    };
+
+    window.openProfileModal = function() {
+      showAlert('Profile modal coming soon', 'info');
+    };
+
+    // Store user registration when they log in
+    function storeUserRegistration(user) {
+      const registeredUsers = JSON.parse(localStorage.getItem('registeredUsers') || '[]');
+      const userExists = registeredUsers.find(u => u.uid === user.uid);
+      
+      if (!userExists) {
+        registeredUsers.push({
+          uid: user.uid,
+          email: user.email,
+          displayName: user.displayName,
+          createdAt: user.metadata.creationTime
+        });
+        localStorage.setItem('registeredUsers', JSON.stringify(registeredUsers));
+      }
+    }
 
     function showAlert(message, type = 'info') {
       const alert = document.createElement('div');

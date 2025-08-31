@@ -390,18 +390,26 @@ h1, h2, h3, h4, h5, h6 {
   font-size: 3rem !important; /* Reduced from 5x */
 }
 
-/* Full-frame Notion embed */
+/* Full-frame iframe container */
 .notion-embed-container {
-  margin: -1.25rem !important;
-  border-radius: var(--border-radius) !important;
+  position: relative !important;
+  width: 100% !important;
+  height: 600px !important;
+  margin: 0 !important;
+  padding: 0 !important;
   overflow: hidden !important;
+  border-radius: var(--border-radius) !important;
 }
 
 .notion-embed-container iframe {
+  position: absolute !important;
+  top: 0 !important;
+  left: 0 !important;
   width: 100% !important;
-  height: 800px !important;
+  height: 100% !important;
   border: none !important;
-  display: block !important;
+  margin: 0 !important;
+  padding: 0 !important;
 }
 
 /* Responsive adjustments */
