@@ -3,609 +3,619 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
-  <meta http-equiv="x-ua-compatible" content="ie=edge" />
   <title>pro.stevenewton.me</title>
+  <!-- MDB v7 core CSS -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/mdb-ui-kit/7.0.0/mdb.min.css"/>
   <!-- Font Awesome -->
-  <link rel="stylesheet" href="https://use.fontawesome.com/releases/v6.0.0/css/all.css" />
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css"/>
   <!-- Google Fonts Inter -->
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Inter:ital,opsz,wght@0,14..32,100..900;1,14..32,100..900&display=swap" rel="stylesheet">
-  <!-- MDB core CSS -->
-  <link rel="stylesheet" href="css/mdb.min.css" />
-  <!-- Custom styles -->
-  <link rel="stylesheet" href="css/admin.css" />
-  <!-- Modern Overrides -->
-  <link rel="stylesheet" href="css/modern-overrides.css" />
+  
+  <style>
+    body {
+      font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+    }
+    
+    /* Main content breathing room when sidenav is in "side" mode */
+    #page-content {
+      padding: 2rem;
+      transition: margin-left .3s;
+    }
+    
+    @media (min-width: 992px) {
+      #page-content {
+        margin-left: 260px;
+      }
+    }
+    
+    /* Simple iframe container */
+    .notion-embed-container {
+      width: 100%;
+      height: 600px;
+      border-radius: 0.5rem;
+      overflow: hidden;
+    }
+    
+    .notion-embed-container iframe {
+      width: 100%;
+      height: 100%;
+      border: none;
+    }
+  </style>
 </head>
 
-<body>
-  <!-- Sidenav using standard MDB5 component -->
-  <nav id="main-sidenav" class="sidenav" data-mdb-sidenav-init data-mdb-hidden="false" data-mdb-accordion="true">
-    <div class="mt-4">
-      <div class="text-center">
-        <img src="img/srn.png" height="30" alt="" class="mb-3" />
-      </div>
-      
+<body class="bg-light">
+  <!-- Sidebar Toggler (visible on small viewports) -->
+  <button
+    id="sidenav-toggler"
+    class="btn btn-primary m-3 d-lg-none"
+    data-mdb-toggle="sidenav"
+    data-mdb-target="#main-sidenav"
+  >
+    <i class="fas fa-bars"></i>
+  </button>
+
+  <!-- MDB v7 Sidenav -->
+  <nav
+    id="main-sidenav"
+    class="sidenav bg-white"
+    data-mdb-sidenav-init
+    data-mdb-color="dark"
+    data-mdb-mode="side"
+    data-mdb-hidden="false"
+  >
+    <!-- Header -->
+    <div class="pt-4 px-3">
+      <img src="img/srn.png" class="img-fluid mb-3" style="max-width: 50px;" alt="Logo"/>
+      <h6 class="mb-0" id="sidebarUserName">User</h6>
+      <p class="text-muted small" id="sidebarUserEmail">user@example.com</p>
+      <span class="badge bg-primary" id="sidebarMembershipBadge">Free Member</span>
+    </div>
+    <hr class="mb-0"/>
+
+    <!-- Scrollable menu container -->
+    <div class="h-100" data-mdb-perfect-scrollbar="true">
       <ul class="sidenav-menu">
-        <!-- Main Navigation -->
         <li class="sidenav-item">
-          <a class="sidenav-link active" data-target="start-here-section">
-            <i class="fas fa-home"></i>
-            <span>Start Here</span>
+          <a class="sidenav-link active" onclick="navigateToSection('start-here-section')">
+            <i class="fas fa-home me-3"></i>Start Here
           </a>
         </li>
         
         <li class="sidenav-item">
-          <a class="sidenav-link" data-target="announcements-section">
-            <i class="fas fa-bullhorn"></i>
-            <span>Announcements</span>
+          <a class="sidenav-link" onclick="navigateToSection('announcements-section')">
+            <i class="fas fa-bullhorn me-3"></i>Announcements
           </a>
         </li>
 
         <li class="sidenav-item">
-          <a class="sidenav-link" data-mdb-collapse-init data-mdb-target="#contentCollapse" aria-expanded="false" aria-controls="contentCollapse">
-            <i class="fas fa-book"></i>
-            <span>Content</span>
-            <i class="fas fa-angle-down rotate-icon ms-auto"></i>
+          <a class="sidenav-link">
+            <i class="fas fa-book me-3"></i>Content
           </a>
-          <ul class="sidenav-collapse collapse" id="contentCollapse">
+          <ul class="sidenav-collapse">
             <li class="sidenav-item">
-              <a class="sidenav-link" onclick="showContentPage('sales-fundamentals')">
-                <i class="fas fa-circle"></i>
-                <span>Sales Fundamentals</span>
-              </a>
+              <a class="sidenav-link" onclick="showContentPage('sales-fundamentals')">Sales Fundamentals</a>
             </li>
             <li class="sidenav-item">
-              <a class="sidenav-link" onclick="showContentPage('intro-crm')">
-                <i class="fas fa-circle"></i>
-                <span>Introduction to CRM</span>
-              </a>
+              <a class="sidenav-link" onclick="showContentPage('intro-crm')">Introduction to CRM</a>
             </li>
-            <li class="sidenav-category">Pro Content</li>
+            <li class="sidenav-item">
+              <small class="text-muted px-3">PRO CONTENT</small>
+            </li>
             <li class="sidenav-item">
               <a class="sidenav-link text-muted" onclick="showProContent('advanced-sales')">
-                <i class="fas fa-lock"></i>
-                <span>Advanced Sales Techniques</span>
+                <i class="fas fa-lock me-2"></i>Advanced Sales Techniques
               </a>
             </li>
             <li class="sidenav-item">
               <a class="sidenav-link text-muted" onclick="showProContent('sales-psychology')">
-                <i class="fas fa-lock"></i>
-                <span>Sales Psychology</span>
+                <i class="fas fa-lock me-2"></i>Sales Psychology
               </a>
             </li>
             <li class="sidenav-item">
               <a class="sidenav-link text-muted" onclick="showProContent('enterprise-sales')">
-                <i class="fas fa-lock"></i>
-                <span>Enterprise Sales</span>
+                <i class="fas fa-lock me-2"></i>Enterprise Sales
               </a>
             </li>
           </ul>
         </li>
 
         <li class="sidenav-item">
-          <a class="sidenav-link text-muted" data-target="pro1-section" id="pro1-nav">
-            <i class="fas fa-star"></i>
-            <span>Pro 1</span>
+          <a class="sidenav-link text-muted" onclick="navigateToSection('pro1-section')" id="pro1-nav">
+            <i class="fas fa-star me-3"></i>Pro 1
             <i class="fas fa-lock ms-auto" id="pro1-lock"></i>
           </a>
         </li>
 
         <li class="sidenav-item">
-          <a class="sidenav-link text-muted" data-target="pro2-section" id="pro2-nav">
-            <i class="fas fa-trophy"></i>
-            <span>Pro 2</span>
+          <a class="sidenav-link text-muted" onclick="navigateToSection('pro2-section')" id="pro2-nav">
+            <i class="fas fa-trophy me-3"></i>Pro 2
             <i class="fas fa-lock ms-auto" id="pro2-lock"></i>
           </a>
         </li>
 
         <li class="sidenav-item">
-          <a class="sidenav-link text-muted" data-target="pro3-section" id="pro3-nav">
-            <i class="fas fa-crown"></i>
-            <span>Pro 3</span>
+          <a class="sidenav-link text-muted" onclick="navigateToSection('pro3-section')" id="pro3-nav">
+            <i class="fas fa-crown me-3"></i>Pro 3
             <i class="fas fa-lock ms-auto" id="pro3-lock"></i>
           </a>
         </li>
 
-        <!-- Divider -->
-        <hr class="my-3">
+        <hr>
 
-        <!-- Secondary Navigation -->
         <li class="sidenav-item">
-          <a class="sidenav-link" data-target="network-section">
-            <i class="fas fa-users"></i>
-            <span>Network</span>
+          <a class="sidenav-link" onclick="navigateToSection('network-section')">
+            <i class="fas fa-users me-3"></i>Network
           </a>
         </li>
 
         <li class="sidenav-item">
-          <a class="sidenav-link" data-target="support-section">
-            <i class="fas fa-life-ring"></i>
-            <span>Support</span>
+          <a class="sidenav-link" onclick="navigateToSection('support-section')">
+            <i class="fas fa-life-ring me-3"></i>Support
           </a>
         </li>
 
         <!-- Admin Section -->
         <div id="adminSection" style="display: none;">
-          <li class="sidenav-category">Admin</li>
+          <hr>
           <li class="sidenav-item">
-            <a class="sidenav-link" data-target="user-management-section">
-              <i class="fas fa-users-cog"></i>
-              <span>User Management</span>
+            <small class="text-muted px-3">ADMIN</small>
+          </li>
+          <li class="sidenav-item">
+            <a class="sidenav-link" onclick="navigateToSection('user-management-section')">
+              <i class="fas fa-users-cog me-3"></i>User Management
             </a>
           </li>
         </div>
+
+        <hr>
+
+        <li class="sidenav-item">
+          <a class="sidenav-link" onclick="openProfileModal()">
+            <i class="fas fa-user me-3"></i>My Profile
+          </a>
+        </li>
+
+        <li class="sidenav-item">
+          <a class="sidenav-link" id="logoutBtn">
+            <i class="fas fa-sign-out-alt me-3"></i>Logout
+          </a>
+        </li>
       </ul>
     </div>
   </nav>
 
-  <!-- Navbar using MDB standard structure -->
-  <nav class="navbar navbar-expand-lg bg-body-tertiary">
+  <!-- Top Navbar -->
+  <nav class="navbar navbar-expand-lg navbar-light bg-white shadow-sm">
     <div class="container-fluid">
-      <!-- Navbar brand -->
-      <a class="navbar-brand me-2" href="#">
-        <img src="img/srn.png" height="25" alt="Logo" loading="lazy" />
-      </a>
-
-      <!-- Toggle button -->
-      <button
-        data-mdb-collapse-init
-        class="navbar-toggler"
-        type="button"
-        data-mdb-target="#navbarContent"
-        aria-controls="navbarContent"
-        aria-expanded="false"
-        aria-label="Toggle navigation"
-      >
-        <i class="fas fa-bars"></i>
-      </button>
-
-      <!-- Collapsible wrapper -->
-      <div class="collapse navbar-collapse" id="navbarContent">
-        <!-- Left links -->
-        <ul class="navbar-nav me-auto mb-2 mb-lg-0">
-          <li class="nav-item">
-            <a class="nav-link" href="#">Dashboard</a>
-          </li>
-        </ul>
-
-        <!-- Right side content -->
-        <div class="d-flex align-items-center">
-          <!-- Search form -->
-          <form class="d-none d-md-flex input-group w-auto my-auto me-3">
-            <input type="search" class="form-control" placeholder="Search..." style="min-width: 200px;" />
-            <span class="input-group-text border-0">
+      <div class="d-flex align-items-center">
+        <!-- Search -->
+        <form class="d-flex me-auto">
+          <div class="input-group">
+            <input type="search" class="form-control" placeholder="Search..." style="min-width: 300px;">
+            <span class="input-group-text">
               <i class="fas fa-search"></i>
             </span>
-          </form>
-
-          <!-- Notifications -->
-          <div class="dropdown me-3">
-            <a class="btn btn-link p-2 text-dark" href="#" role="button" data-mdb-dropdown-init aria-expanded="false">
-              <i class="fas fa-bell"></i>
-              <span class="badge rounded-pill badge-notification bg-danger">1</span>
-            </a>
-            <ul class="dropdown-menu dropdown-menu-end">
-              <li><a class="dropdown-item" href="#">Welcome to pro.sn!</a></li>
-              <li><a class="dropdown-item" href="#">System running smoothly</a></li>
-            </ul>
           </div>
+        </form>
+      </div>
 
-          <!-- User dropdown -->
-          <div class="dropdown">
-            <a class="btn btn-link p-2 text-dark" href="#" role="button" data-mdb-dropdown-init aria-expanded="false">
-              <i class="fas fa-user-circle me-1"></i>
-              <span id="userDisplayName">User</span>
-            </a>
-            <ul class="dropdown-menu dropdown-menu-end">
-              <li><a class="dropdown-item" href="#" onclick="openProfileModal()"><i class="fas fa-user me-2"></i>My profile</a></li>
-              <li><a class="dropdown-item" href="#"><i class="fas fa-cog me-2"></i>Settings</a></li>
-              <li><hr class="dropdown-divider" /></li>
-              <li><a class="dropdown-item" href="#" id="logoutBtn"><i class="fas fa-sign-out-alt me-2"></i>Logout</a></li>
-            </ul>
-          </div>
+      <!-- Right side content -->
+      <div class="d-flex align-items-center">
+        <!-- Notifications -->
+        <div class="dropdown me-3">
+          <button class="btn btn-link position-relative" type="button" data-mdb-dropdown-toggle>
+            <i class="fas fa-bell"></i>
+            <span class="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-danger">1</span>
+          </button>
+          <ul class="dropdown-menu dropdown-menu-end">
+            <li><a class="dropdown-item" href="#">Welcome to pro.sn!</a></li>
+            <li><a class="dropdown-item" href="#">System running smoothly</a></li>
+          </ul>
+        </div>
+
+        <!-- User info -->
+        <div class="d-flex align-items-center">
+          <i class="fas fa-user-circle me-2 text-muted"></i>
+          <span id="navbarUserName" class="text-muted">User</span>
         </div>
       </div>
     </div>
   </nav>
 
   <!-- Main Content -->
-  <main class="sidenav-enabled pt-4" style="margin-top: 58px;">
-    <div class="container-fluid py-4">
+  <main id="page-content">
+    <!-- START HERE SECTION -->
+    <section id="start-here-section">
+      <div class="d-flex justify-content-between align-items-center mb-4">
+        <h2><i class="fas fa-home me-2"></i>Welcome to Sales Training</h2>
+      </div>
+
+      <!-- Welcome Card -->
+      <div class="row mb-4">
+        <div class="col-12">
+          <div class="card bg-primary text-white">
+            <div class="card-body">
+              <h4>Welcome, <span id="welcomeUserName">User</span>!</h4>
+              <p class="mb-0">Get started with your sales training journey. Navigate through the sections to access your content.</p>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Stats Cards -->
+      <div class="row mb-4">
+        <div class="col-md-8">
+          <div class="card">
+            <div class="card-header">
+              <h6 class="mb-0"><i class="fas fa-user me-2"></i>Your Membership</h6>
+            </div>
+            <div class="card-body">
+              <div class="row">
+                <div class="col-md-6">
+                  <p><strong>Current Plan:</strong> <span id="currentPlan">Free</span></p>
+                  <p><strong>Member Since:</strong> <span id="memberSince">Loading...</span></p>
+                </div>
+                <div class="col-md-6">
+                  <p><strong>Your Access:</strong></p>
+                  <ul id="accessList">
+                    <li>Start Here</li>
+                    <li>Announcements</li>
+                    <li>Content Library</li>
+                    <li>Network</li>
+                    <li>Support</li>
+                  </ul>
+                </div>
+              </div>
+              <div id="upgradeSection">
+                <button class="btn btn-success" onclick="showUpgradeOptions()">
+                  <i class="fas fa-arrow-up me-1"></i>Upgrade Membership
+                </button>
+              </div>
+            </div>
+          </div>
+        </div>
+        
+        <div class="col-md-4">
+          <div class="card">
+            <div class="card-header">
+              <h6 class="mb-0"><i class="fas fa-chart-line me-2"></i>Quick Stats</h6>
+            </div>
+            <div class="card-body text-center">
+              <div class="mb-3">
+                <h4 class="text-primary">5</h4>
+                <p class="text-muted small mb-0">Content Accessed</p>
+              </div>
+              <div>
+                <h4 class="text-success">25%</h4>
+                <p class="text-muted small mb-0">Completion Rate</p>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Quick Actions -->
+      <div class="row">
+        <div class="col-md-4 mb-3">
+          <div class="card h-100 text-center">
+            <div class="card-body">
+              <i class="fas fa-bullhorn fa-2x text-warning mb-3"></i>
+              <h6>Latest Announcements</h6>
+              <p class="text-muted small">Check out the latest updates</p>
+              <button class="btn btn-outline-warning btn-sm" onclick="navigateToSection('announcements-section')">View Announcements</button>
+            </div>
+          </div>
+        </div>
+        
+        <div class="col-md-4 mb-3">
+          <div class="card h-100 text-center">
+            <div class="card-body">
+              <i class="fas fa-book fa-2x text-info mb-3"></i>
+              <h6>Content Library</h6>
+              <p class="text-muted small">Access training materials</p>
+              <button class="btn btn-outline-info btn-sm" onclick="navigateToSection('content-section')">Browse Content</button>
+            </div>
+          </div>
+        </div>
+        
+        <div class="col-md-4 mb-3">
+          <div class="card h-100 text-center">
+            <div class="card-body">
+              <i class="fas fa-users fa-2x text-success mb-3"></i>
+              <h6>Network</h6>
+              <p class="text-muted small">Connect with members</p>
+              <button class="btn btn-outline-success btn-sm" onclick="navigateToSection('network-section')">Join Network</button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ANNOUNCEMENTS SECTION -->
+    <section id="announcements-section" style="display: none;">
+      <h2><i class="fas fa-bullhorn me-2"></i>Announcements</h2>
       
-      <!-- START HERE SECTION -->
-      <section id="start-here-section">
-        <div class="d-flex justify-content-between align-items-center mb-4">
-          <h2><i class="fas fa-home me-2"></i>Welcome to Sales Training</h2>
-          <span class="badge bg-primary" id="membershipBadge">Free Member</span>
-        </div>
-
-        <!-- Welcome Card -->
-        <div class="row mb-4">
-          <div class="col-12">
-            <div class="card border-left-primary">
-              <div class="card-body">
-                <h5 class="text-primary">Welcome, <span id="welcomeUserName">User</span>!</h5>
-                <p class="mb-0">Get started with your sales training journey. Navigate through the sections to access your content.</p>
+      <div class="card">
+        <div class="card-body">
+          <div class="border-bottom pb-3 mb-3">
+            <div class="d-flex justify-content-between">
+              <div>
+                <h6 class="text-primary">Welcome to the Sales Training Platform!</h6>
+                <p class="text-muted small mb-2">Posted on August 31, 2025</p>
+                <p>We're excited to have you here! Start with the free content and explore upgrade options.</p>
               </div>
-            </div>
-          </div>
-        </div>
-
-        <!-- Stats Row -->
-        <div class="row mb-4">
-          <div class="col-md-8">
-            <div class="card">
-              <div class="card-header">
-                <h6 class="mb-0"><i class="fas fa-user me-2"></i>Your Membership</h6>
-              </div>
-              <div class="card-body">
-                <div class="row">
-                  <div class="col-md-6">
-                    <p class="mb-2"><strong>Current Plan:</strong> <span id="currentPlan">Free</span></p>
-                    <p class="mb-3"><strong>Member Since:</strong> <span id="memberSince">Loading...</span></p>
-                  </div>
-                  <div class="col-md-6">
-                    <p class="mb-2"><strong>Your Access:</strong></p>
-                    <ul id="accessList" class="mb-3">
-                      <li>Start Here</li>
-                      <li>Announcements</li>
-                      <li>Content Library</li>
-                      <li>Network</li>
-                      <li>Support</li>
-                    </ul>
-                  </div>
-                </div>
-                <div id="upgradeSection">
-                  <button class="btn btn-success btn-sm" onclick="showUpgradeOptions()">
-                    <i class="fas fa-arrow-up me-1"></i>Upgrade Membership
-                  </button>
-                </div>
-              </div>
+              <span class="badge bg-info">Important</span>
             </div>
           </div>
           
-          <div class="col-md-4">
-            <div class="card border-left-info">
-              <div class="card-header">
-                <h6 class="mb-0"><i class="fas fa-chart-line me-2"></i>Quick Stats</h6>
+          <div>
+            <div class="d-flex justify-content-between">
+              <div>
+                <h6 class="text-primary">New Pro Content Added</h6>
+                <p class="text-muted small mb-2">Posted on August 30, 2025</p>
+                <p>Advanced sales techniques added to Pro tiers. Upgrade to access premium materials.</p>
               </div>
-              <div class="card-body text-center">
+              <span class="badge bg-success">New</span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- CONTENT SECTION -->
+    <section id="content-section" style="display: none;">
+      <h2><i class="fas fa-book me-2"></i>Content Library</h2>
+
+      <!-- Free Content -->
+      <div class="card mb-4">
+        <div class="card-header bg-success text-white">
+          <h6 class="mb-0"><i class="fas fa-unlock me-2"></i>Free Content</h6>
+        </div>
+        <div class="card-body">
+          <div class="row">
+            <div class="col-md-6 mb-3">
+              <div class="card">
+                <div class="card-body">
+                  <h6>Sales Fundamentals</h6>
+                  <p class="text-muted small">Basic sales principles and techniques</p>
+                  <button class="btn btn-success btn-sm" onclick="showContentPage('sales-fundamentals')">Access Now</button>
+                </div>
+              </div>
+            </div>
+            <div class="col-md-6 mb-3">
+              <div class="card">
+                <div class="card-body">
+                  <h6>Introduction to CRM</h6>
+                  <p class="text-muted small">Getting started with CRM</p>
+                  <button class="btn btn-success btn-sm" onclick="showContentPage('intro-crm')">Access Now</button>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Premium Content Preview -->
+      <div class="card border-warning">
+        <div class="card-header bg-warning">
+          <h6 class="mb-0"><i class="fas fa-lock me-2"></i>Premium Content Available</h6>
+        </div>
+        <div class="card-body">
+          <p>Unlock advanced sales training with Pro membership:</p>
+          <ul class="mb-3">
+            <li><strong>Pro 1:</strong> Advanced closing techniques, objection handling</li>
+            <li><strong>Pro 2:</strong> Enterprise sales strategies, negotiation mastery</li>
+            <li><strong>Pro 3:</strong> Sales leadership, team management, analytics</li>
+          </ul>
+          <button class="btn btn-warning" onclick="showUpgradeOptions()">
+            <i class="fas fa-arrow-up me-1"></i>Upgrade to Access
+          </button>
+        </div>
+      </div>
+    </section>
+
+    <!-- SALES FUNDAMENTALS PAGE -->
+    <section id="sales-fundamentals-page" style="display: none;">
+      <div class="d-flex align-items-center mb-4">
+        <button class="btn btn-outline-secondary btn-sm me-3" onclick="navigateToSection('content-section')">
+          <i class="fas fa-arrow-left me-1"></i>Back
+        </button>
+        <h2><i class="fas fa-graduation-cap me-2"></i>Sales Fundamentals</h2>
+      </div>
+
+      <div class="card">
+        <div class="card-header">
+          <h6 class="mb-0">Master the Basics of Sales</h6>
+        </div>
+        <div class="card-body">
+          <p class="mb-4">Learn the fundamental principles and techniques that every successful salesperson needs to know.</p>
+          
+          <!-- Notion Embed with your exact code -->
+          <div class="notion-embed-container">
+            <iframe
+              src="https://229k3j2mwzrkxr1.embednotionpage.com/?source=copy_link"
+              style="width: 100%; height: 100%; border: none !important; padding: 0;"
+            ></iframe>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- INTRO TO CRM PAGE -->
+    <section id="intro-crm-page" style="display: none;">
+      <div class="d-flex align-items-center mb-4">
+        <button class="btn btn-outline-secondary btn-sm me-3" onclick="navigateToSection('content-section')">
+          <i class="fas fa-arrow-left me-1"></i>Back
+        </button>
+        <h2><i class="fas fa-database me-2"></i>Introduction to CRM</h2>
+      </div>
+
+      <div class="card">
+        <div class="card-header">
+          <h6 class="mb-0">Customer Relationship Management Basics</h6>
+        </div>
+        <div class="card-body">
+          <p class="mb-4">Get started with customer relationship management.</p>
+          
+          <div class="text-center py-5">
+            <i class="fas fa-database fa-4x text-muted mb-4"></i>
+            <h5>CRM Training Content</h5>
+            <p class="text-muted">Content coming soon! This will include comprehensive CRM training materials.</p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- PRO SECTIONS -->
+    <section id="pro1-section" style="display: none;">
+      <div class="text-center py-5">
+        <div class="card">
+          <div class="card-body py-5">
+            <i class="fas fa-lock fa-4x text-muted mb-4"></i>
+            <h4>Pro 1 Access Required</h4>
+            <p class="text-muted mb-4">Upgrade to Pro 1 to access this premium content.</p>
+            <button class="btn btn-primary" onclick="showUpgradeOptions()">Upgrade Now</button>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section id="pro2-section" style="display: none;">
+      <div class="text-center py-5">
+        <div class="card">
+          <div class="card-body py-5">
+            <i class="fas fa-lock fa-4x text-muted mb-4"></i>
+            <h4>Pro 2 Access Required</h4>
+            <p class="text-muted mb-4">Upgrade to Pro 2 to access this premium content.</p>
+            <button class="btn btn-primary" onclick="showUpgradeOptions()">Upgrade Now</button>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section id="pro3-section" style="display: none;">
+      <div class="text-center py-5">
+        <div class="card">
+          <div class="card-body py-5">
+            <i class="fas fa-lock fa-4x text-muted mb-4"></i>
+            <h4>Pro 3 Access Required</h4>
+            <p class="text-muted mb-4">Upgrade to Pro 3 to access this premium content.</p>
+            <button class="btn btn-primary" onclick="showUpgradeOptions()">Upgrade Now</button>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- NETWORK SECTION -->
+    <section id="network-section" style="display: none;">
+      <h2><i class="fas fa-users me-2"></i>Network</h2>
+      
+      <div class="card">
+        <div class="card-body">
+          <h6>Connect with Fellow Sales Professionals</h6>
+          <p>Network features coming soon! Connect with other members, share experiences, and learn together.</p>
+          <div class="alert alert-info">
+            <i class="fas fa-info-circle me-2"></i>Community features will be available in a future update.
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- SUPPORT SECTION -->
+    <section id="support-section" style="display: none;">
+      <h2><i class="fas fa-life-ring me-2"></i>Support</h2>
+      
+      <div class="row">
+        <div class="col-md-8">
+          <div class="card">
+            <div class="card-header">
+              <h6 class="mb-0">Get Help</h6>
+            </div>
+            <div class="card-body">
+              <form id="supportForm">
                 <div class="mb-3">
-                  <h4 class="text-primary mb-1">5</h4>
-                  <p class="text-muted small mb-0">Content Accessed</p>
+                  <label class="form-label">Subject</label>
+                  <input type="text" class="form-control" required>
                 </div>
-                <div>
-                  <h4 class="text-success mb-1">25%</h4>
-                  <p class="text-muted small mb-0">Completion Rate</p>
+                <div class="mb-3">
+                  <label class="form-label">How can we help you?</label>
+                  <textarea class="form-control" rows="4" required></textarea>
                 </div>
-              </div>
+                <button type="submit" class="btn btn-primary">
+                  <i class="fas fa-paper-plane me-1"></i>Send Message
+                </button>
+              </form>
             </div>
           </div>
-        </div>
-
-        <!-- Quick Actions -->
-        <div class="row g-3">
-          <div class="col-md-4">
-            <div class="card h-100">
-              <div class="card-body text-center">
-                <i class="fas fa-bullhorn fa-3x text-warning mb-3"></i>
-                <h6>Latest Announcements</h6>
-                <p class="text-muted small mb-3">Check out the latest updates</p>
-                <button class="btn btn-outline-warning btn-sm" onclick="navigateToSection('announcements-section')">View Announcements</button>
-              </div>
-            </div>
-          </div>
-          
-          <div class="col-md-4">
-            <div class="card h-100">
-              <div class="card-body text-center">
-                <i class="fas fa-book fa-3x text-info mb-3"></i>
-                <h6>Content Library</h6>
-                <p class="text-muted small mb-3">Access training materials</p>
-                <button class="btn btn-outline-info btn-sm" onclick="navigateToSection('content-section')">Browse Content</button>
-              </div>
-            </div>
-          </div>
-          
-          <div class="col-md-4">
-            <div class="card h-100">
-              <div class="card-body text-center">
-                <i class="fas fa-users fa-3x text-success mb-3"></i>
-                <h6>Network</h6>
-                <p class="text-muted small mb-3">Connect with members</p>
-                <button class="btn btn-outline-success btn-sm" onclick="navigateToSection('network-section')">Join Network</button>
-              </div>
-            </div>
-          </div>
-        </div>
-      </section>
-
-      <!-- ANNOUNCEMENTS SECTION -->
-      <section id="announcements-section" style="display: none;">
-        <div class="d-flex justify-content-between align-items-center mb-4">
-          <h2><i class="fas fa-bullhorn me-2"></i>Announcements</h2>
-        </div>
-
-        <div class="card">
-          <div class="card-body">
-            <div class="border-bottom pb-3 mb-3">
-              <div class="d-flex justify-content-between align-items-start">
-                <div>
-                  <h6 class="text-primary mb-1">Welcome to the Sales Training Platform!</h6>
-                  <p class="text-muted small mb-2">Posted on August 31, 2025</p>
-                  <p class="mb-0">We're excited to have you here! Start with the free content and explore upgrade options.</p>
-                </div>
-                <span class="badge bg-info">Important</span>
-              </div>
-            </div>
-            
-            <div>
-              <div class="d-flex justify-content-between align-items-start">
-                <div>
-                  <h6 class="text-primary mb-1">New Pro Content Added</h6>
-                  <p class="text-muted small mb-2">Posted on August 30, 2025</p>
-                  <p class="mb-0">Advanced sales techniques added to Pro tiers. Upgrade to access premium materials.</p>
-                </div>
-                <span class="badge bg-success">New</span>
-              </div>
-            </div>
-          </div>
-        </div>
-      </section>
-
-      <!-- CONTENT SECTION -->
-      <section id="content-section" style="display: none;">
-        <div class="d-flex justify-content-between align-items-center mb-4">
-          <h2><i class="fas fa-book me-2"></i>Content Library</h2>
-        </div>
-
-        <!-- Free Content -->
-        <div class="card mb-4">
-          <div class="card-header bg-success text-white">
-            <h6 class="mb-0"><i class="fas fa-unlock me-2"></i>Free Content</h6>
-          </div>
-          <div class="card-body">
-            <div class="row g-3">
-              <div class="col-md-6">
-                <div class="card">
-                  <div class="card-body">
-                    <h6 class="mb-2">Sales Fundamentals</h6>
-                    <p class="text-muted small mb-3">Basic sales principles and techniques</p>
-                    <button class="btn btn-success btn-sm" onclick="showContentPage('sales-fundamentals')">Access Now</button>
-                  </div>
-                </div>
-              </div>
-              <div class="col-md-6">
-                <div class="card">
-                  <div class="card-body">
-                    <h6 class="mb-2">Introduction to CRM</h6>
-                    <p class="text-muted small mb-3">Getting started with CRM</p>
-                    <button class="btn btn-success btn-sm" onclick="showContentPage('intro-crm')">Access Now</button>
-                  </div>
-                </div>
-              </div>
-            </div>
-          </div>
-        </div>
-
-        <!-- Premium Content Preview -->
-        <div class="card border-left-warning">
-          <div class="card-header">
-            <h6 class="mb-0"><i class="fas fa-lock me-2"></i>Premium Content Available</h6>
-          </div>
-          <div class="card-body">
-            <p class="mb-3">Unlock advanced sales training with Pro membership:</p>
-            <ul class="mb-3">
-              <li><strong>Pro 1:</strong> Advanced closing techniques, objection handling</li>
-              <li><strong>Pro 2:</strong> Enterprise sales strategies, negotiation mastery</li>
-              <li><strong>Pro 3:</strong> Sales leadership, team management, analytics</li>
-            </ul>
-            <button class="btn btn-warning btn-sm" onclick="showUpgradeOptions()">
-              <i class="fas fa-arrow-up me-1"></i>Upgrade to Access
-            </button>
-          </div>
-        </div>
-      </section>
-
-      <!-- SALES FUNDAMENTALS PAGE -->
-      <section id="sales-fundamentals-page" style="display: none;">
-        <div class="d-flex align-items-center mb-4">
-          <button class="btn btn-outline-secondary btn-sm me-3" onclick="navigateToSection('content-section')">
-            <i class="fas fa-arrow-left me-1"></i>Back
-          </button>
-          <h2 class="mb-0"><i class="fas fa-graduation-cap me-2"></i>Sales Fundamentals</h2>
-        </div>
-
-        <div class="card">
-          <div class="card-header">
-            <h6 class="mb-0">Master the Basics of Sales</h6>
-          </div>
-          <div class="card-body">
-            <p class="mb-4 text-muted">Learn the fundamental principles and techniques that every successful salesperson needs to know.</p>
-            
-            <!-- Full-frame Notion Embed -->
-            <div class="notion-embed-container">
-              <iframe
-                src="https://229k3j2mwzrkxr1.embednotionpage.com/?source=copy_link"
-                style="width: 100%; height: 100%; border: none !important; padding: 0;"
-              ></iframe>
-            </div>
-          </div>
-        </div>
-      </section>
-
-      <!-- INTRO TO CRM PAGE -->
-      <section id="intro-crm-page" style="display: none;">
-        <div class="d-flex align-items-center mb-4">
-          <button class="btn btn-outline-secondary btn-sm me-3" onclick="navigateToSection('content-section')">
-            <i class="fas fa-arrow-left me-1"></i>Back
-          </button>
-          <h2 class="mb-0"><i class="fas fa-database me-2"></i>Introduction to CRM</h2>
-        </div>
-
-        <div class="card">
-          <div class="card-header">
-            <h6 class="mb-0">Customer Relationship Management Basics</h6>
-          </div>
-          <div class="card-body">
-            <p class="mb-4 text-muted">Get started with customer relationship management.</p>
-            
-            <div class="text-center py-5">
-              <i class="fas fa-database fa-5x text-muted mb-4"></i>
-              <h5 class="text-muted">CRM Training Content</h5>
-              <p class="text-muted">Content coming soon! This will include comprehensive CRM training materials.</p>
-            </div>
-          </div>
-        </div>
-      </section>
-
-      <!-- PRO SECTIONS -->
-      <section id="pro1-section" style="display: none;">
-        <div class="text-center py-5">
-          <div class="card">
-            <div class="card-body py-5">
-              <i class="fas fa-lock fa-5x text-muted mb-4"></i>
-              <h4 class="text-muted mb-3">Pro 1 Access Required</h4>
-              <p class="text-muted mb-4">Upgrade to Pro 1 to access this premium content.</p>
-              <button class="btn btn-primary" onclick="showUpgradeOptions()">Upgrade Now</button>
-            </div>
-          </div>
-        </div>
-      </section>
-
-      <section id="pro2-section" style="display: none;">
-        <div class="text-center py-5">
-          <div class="card">
-            <div class="card-body py-5">
-              <i class="fas fa-lock fa-5x text-muted mb-4"></i>
-              <h4 class="text-muted mb-3">Pro 2 Access Required</h4>
-              <p class="text-muted mb-4">Upgrade to Pro 2 to access this premium content.</p>
-              <button class="btn btn-primary" onclick="showUpgradeOptions()">Upgrade Now</button>
-            </div>
-          </div>
-        </div>
-      </section>
-
-      <section id="pro3-section" style="display: none;">
-        <div class="text-center py-5">
-          <div class="card">
-            <div class="card-body py-5">
-              <i class="fas fa-lock fa-5x text-muted mb-4"></i>
-              <h4 class="text-muted mb-3">Pro 3 Access Required</h4>
-              <p class="text-muted mb-4">Upgrade to Pro 3 to access this premium content.</p>
-              <button class="btn btn-primary" onclick="showUpgradeOptions()">Upgrade Now</button>
-            </div>
-          </div>
-        </div>
-      </section>
-
-      <!-- NETWORK SECTION -->
-      <section id="network-section" style="display: none;">
-        <div class="d-flex justify-content-between align-items-center mb-4">
-          <h2><i class="fas fa-users me-2"></i>Network</h2>
-        </div>
-        <div class="card">
-          <div class="card-body">
-            <h6 class="mb-3">Connect with Fellow Sales Professionals</h6>
-            <p class="mb-3">Network features coming soon! Connect with other members, share experiences, and learn together.</p>
-            <div class="alert alert-info">
-              <i class="fas fa-info-circle me-2"></i>Community features will be available in a future update.
-            </div>
-          </div>
-        </div>
-      </section>
-
-      <!-- SUPPORT SECTION -->
-      <section id="support-section" style="display: none;">
-        <div class="d-flex justify-content-between align-items-center mb-4">
-          <h2><i class="fas fa-life-ring me-2"></i>Support</h2>
         </div>
         
-        <div class="row">
-          <div class="col-md-8">
-            <div class="card">
-              <div class="card-header">
-                <h6 class="mb-0">Get Help</h6>
-              </div>
-              <div class="card-body">
-                <form id="supportForm">
-                  <div class="form-outline mb-3">
-                    <input type="text" id="supportSubject" class="form-control" required />
-                    <label class="form-label" for="supportSubject">Subject</label>
-                  </div>
-                  <div class="form-outline mb-3">
-                    <textarea id="supportMessage" class="form-control" rows="4" required></textarea>
-                    <label class="form-label" for="supportMessage">How can we help you?</label>
-                  </div>
-                  <button type="submit" class="btn btn-primary btn-sm">
-                    <i class="fas fa-paper-plane me-1"></i>Send Message
-                  </button>
-                </form>
-              </div>
+        <div class="col-md-4">
+          <div class="card">
+            <div class="card-header">
+              <h6 class="mb-0">Quick Help</h6>
             </div>
-          </div>
-          
-          <div class="col-md-4">
-            <div class="card">
-              <div class="card-header">
-                <h6 class="mb-0">Quick Help</h6>
+            <div class="card-body">
+              <div class="mb-3">
+                <h6 class="small"><i class="fas fa-envelope me-2"></i>Email Support</h6>
+                <p class="small text-muted">steve@stevenewton.me</p>
               </div>
-              <div class="card-body">
-                <div class="mb-3">
-                  <h6 class="small mb-1"><i class="fas fa-envelope me-2"></i>Email Support</h6>
-                  <p class="small text-muted mb-0">steve@stevenewton.me</p>
-                </div>
-                <div>
-                  <h6 class="small mb-1"><i class="fas fa-clock me-2"></i>Response Time</h6>
-                  <p class="small text-muted mb-0">Usually within 24 hours</p>
-                </div>
+              <div>
+                <h6 class="small"><i class="fas fa-clock me-2"></i>Response Time</h6>
+                <p class="small text-muted">Usually within 24 hours</p>
               </div>
             </div>
           </div>
         </div>
-      </section>
+      </div>
+    </section>
 
-      <!-- USER MANAGEMENT SECTION -->
-      <section id="user-management-section" style="display: none;">
-        <div class="d-flex justify-content-between align-items-center mb-4">
-          <h2><i class="fas fa-users-cog me-2"></i>User Management</h2>
-          <button class="btn btn-primary btn-sm" onclick="refreshUserList()">
-            <i class="fas fa-sync-alt me-1"></i>Refresh
-          </button>
+    <!-- USER MANAGEMENT SECTION -->
+    <section id="user-management-section" style="display: none;">
+      <div class="d-flex justify-content-between align-items-center mb-4">
+        <h2><i class="fas fa-users-cog me-2"></i>User Management</h2>
+        <button class="btn btn-primary" onclick="refreshUserList()">
+          <i class="fas fa-sync-alt me-1"></i>Refresh
+        </button>
+      </div>
+      
+      <div class="card">
+        <div class="card-header">
+          <h6 class="mb-0">Manage User Memberships</h6>
         </div>
-        
-        <div class="card">
-          <div class="card-header">
-            <h6 class="mb-0">Manage User Memberships</h6>
-          </div>
-          <div class="card-body">
-            <div class="table-responsive">
-              <table class="table table-sm">
-                <thead>
-                  <tr>
-                    <th>Email</th>
-                    <th>Name</th>
-                    <th>Plan</th>
-                    <th>Joined</th>
-                    <th>Actions</th>
-                  </tr>
-                </thead>
-                <tbody id="userManagementTable"></tbody>
-              </table>
-            </div>
+        <div class="card-body">
+          <div class="table-responsive">
+            <table class="table">
+              <thead>
+                <tr>
+                  <th>Email</th>
+                  <th>Name</th>
+                  <th>Plan</th>
+                  <th>Joined</th>
+                  <th>Actions</th>
+                </tr>
+              </thead>
+              <tbody id="userManagementTable">
+                <tr>
+                  <td colspan="5" class="text-center text-muted">Click Refresh to load users</td>
+                </tr>
+              </tbody>
+            </table>
           </div>
         </div>
-      </section>
-
-    </div>
+      </div>
+    </section>
   </main>
 
-  <!-- MDB core JS -->
-  <script type="text/javascript" src="js/mdb.umd.min.js"></script>
-  
-  <!-- Firebase and main script -->
+  <!-- MDB v7 ES-module bundle -->
+  <script type="module">
+    import { Sidenav, Dropdown, Modal, initMDB } from "https://cdnjs.cloudflare.com/ajax/libs/mdb-ui-kit/7.0.0/mdb.es.min.js";
+    initMDB({ Sidenav, Dropdown, Modal });
+  </script>
+
+  <!-- Firebase and main functionality -->
   <script type="module">
     // Import Firebase functions
     import { initializeApp } from 'https://www.gstatic.com/firebasejs/10.7.1/firebase-app.js';
@@ -646,7 +656,10 @@
     function loadUserData(user) {
       const displayName = user.displayName || user.email.split('@')[0];
       
-      document.getElementById('userDisplayName').textContent = displayName;
+      // Update all user display elements
+      document.getElementById('sidebarUserName').textContent = displayName;
+      document.getElementById('sidebarUserEmail').textContent = user.email;
+      document.getElementById('navbarUserName').textContent = displayName;
       document.getElementById('welcomeUserName').textContent = displayName;
       
       if (user.metadata.creationTime) {
@@ -672,7 +685,7 @@
     }
 
     function updateMembershipUI() {
-      const badge = document.getElementById('membershipBadge');
+      const badge = document.getElementById('sidebarMembershipBadge');
       const planDisplay = document.getElementById('currentPlan');
       
       let planText = 'Free';
@@ -737,8 +750,8 @@
       const section = document.getElementById(sectionId);
       if (section) section.style.display = 'block';
       
-      const navLink = document.querySelector(`[data-target="${sectionId}"]`);
-      if (navLink) navLink.classList.add('active');
+      // Add active class to clicked nav item
+      event.target.classList.add('active');
     }
 
     window.navigateToSection = navigateToSection;
@@ -749,77 +762,24 @@
       
       const page = document.getElementById(pageId + '-page');
       if (page) page.style.display = 'block';
-      
-      // Show content collapse
-      const contentCollapse = document.getElementById('contentCollapse');
-      if (!contentCollapse.classList.contains('show')) {
-        contentCollapse.classList.add('show');
-      }
     };
 
     window.showProContent = function() {
-      showAlert('Upgrade to Pro membership to access this content', 'warning');
+      alert('Upgrade to Pro membership to access this content');
       showUpgradeOptions();
     };
 
     window.showUpgradeOptions = function() {
-      const modal = `
-        <div class="modal fade" id="upgradeModal" tabindex="-1">
-          <div class="modal-dialog">
-            <div class="modal-content">
-              <div class="modal-header">
-                <h6 class="modal-title mb-0">Upgrade Your Membership</h6>
-                <button type="button" class="btn-close" data-mdb-dismiss="modal"></button>
-              </div>
-              <div class="modal-body">
-                <div class="row g-3">
-                  <div class="col-12">
-                    <div class="card text-center">
-                      <div class="card-body py-3">
-                        <h6 class="text-warning mb-1"><i class="fas fa-star me-1"></i>Pro 1</h6>
-                        <p class="small mb-2">Advanced closing techniques</p>
-                        <h5 class="mb-2">$29/month</h5>
-                        <button class="btn btn-warning btn-sm">Upgrade</button>
-                      </div>
-                    </div>
-                  </div>
-                  <div class="col-12">
-                    <div class="card text-center">
-                      <div class="card-body py-3">
-                        <h6 class="text-info mb-1"><i class="fas fa-trophy me-1"></i>Pro 2</h6>
-                        <p class="small mb-2">Enterprise sales + Pro 1</p>
-                        <h5 class="mb-2">$49/month</h5>
-                        <button class="btn btn-info btn-sm">Upgrade</button>
-                      </div>
-                    </div>
-                  </div>
-                  <div class="col-12">
-                    <div class="card text-center">
-                      <div class="card-body py-3">
-                        <h6 class="text-success mb-1"><i class="fas fa-crown me-1"></i>Pro 3</h6>
-                        <p class="small mb-2">Sales leadership + All content</p>
-                        <h5 class="mb-2">$99/month</h5>
-                        <button class="btn btn-success btn-sm">Upgrade</button>
-                      </div>
-                    </div>
-                  </div>
-                </div>
-              </div>
-            </div>
-          </div>
-        </div>
-      `;
-      
-      const existing = document.getElementById('upgradeModal');
-      if (existing) existing.remove();
-      
-      document.body.insertAdjacentHTML('beforeend', modal);
-      new mdb.Modal(document.getElementById('upgradeModal')).show();
+      alert('Upgrade modal coming soon! Contact admin for upgrades.');
+    };
+
+    window.openProfileModal = function() {
+      alert('Profile modal coming soon!');
     };
 
     window.refreshUserList = function() {
       if (!isAdmin) {
-        showAlert('Admin access required', 'danger');
+        alert('Admin access required');
         return;
       }
       
@@ -852,7 +812,7 @@
             </td>
             <td>${new Date(user.createdAt).toLocaleDateString()}</td>
             <td>
-              <button class="btn btn-sm btn-outline-primary" onclick="viewUserDetails('${user.uid}')">
+              <button class="btn btn-sm btn-outline-primary">
                 <i class="fas fa-eye"></i>
               </button>
             </td>
@@ -864,7 +824,7 @@
 
     window.changeMembershipLevel = function(userId, newLevel) {
       if (!isAdmin) {
-        showAlert('Admin access required', 'danger');
+        alert('Admin access required');
         return;
       }
       
@@ -878,15 +838,7 @@
         updateMembershipUI();
       }
       
-      showAlert('Membership updated successfully!', 'success');
-    };
-
-    window.viewUserDetails = function(userId) {
-      showAlert('User details feature coming soon', 'info');
-    };
-
-    window.openProfileModal = function() {
-      showAlert('Profile modal coming soon', 'info');
+      alert('Membership updated successfully!');
     };
 
     // Store user registration when they log in
@@ -905,16 +857,6 @@
       }
     }
 
-    function showAlert(message, type = 'info') {
-      const alert = document.createElement('div');
-      alert.className = `alert alert-${type} alert-dismissible fade show position-fixed`;
-      alert.style.cssText = 'top: 80px; right: 20px; z-index: 9999; min-width: 300px;';
-      alert.innerHTML = `${message}<button type="button" class="btn-close" data-mdb-dismiss="alert"></button>`;
-      
-      document.body.appendChild(alert);
-      setTimeout(() => alert.remove(), 5000);
-    }
-
     // Event listeners
     document.getElementById('logoutBtn').addEventListener('click', async (e) => {
       e.preventDefault();
@@ -926,23 +868,11 @@
       }
     });
 
-    // Initialize navigation
-    document.addEventListener('DOMContentLoaded', function() {
-      document.querySelectorAll('[data-target]').forEach(link => {
-        link.addEventListener('click', function(e) {
-          e.preventDefault();
-          navigateToSection(this.getAttribute('data-target'));
-        });
-      });
-
-      const supportForm = document.getElementById('supportForm');
-      if (supportForm) {
-        supportForm.addEventListener('submit', function(e) {
-          e.preventDefault();
-          showAlert('Support message sent! We\'ll respond within 24 hours.', 'success');
-          this.reset();
-        });
-      }
+    // Support form
+    document.getElementById('supportForm').addEventListener('submit', function(e) {
+      e.preventDefault();
+      alert('Support message sent! We\'ll respond within 24 hours.');
+      this.reset();
     });
 
   </script>
