@@ -12,8 +12,7 @@
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Inter:ital,opsz,wght@0,14..32,100..900;1,14..32,100..900&display=swap" rel="stylesheet">
-  <!-- Your custom overrides -->
-  <link rel="stylesheet" href="css/modern-overrides.css"/>
+  <!-- Removed modern-overrides.css to avoid conflicts -->
   
   <style>
     /* Clean Metronic-inspired palette */
@@ -35,8 +34,9 @@
     }
     
     body {
-      background-color: var(--light-bg);
-      color: var(--text-primary);
+      background-color: var(--light-bg) !important;
+      color: var(--text-primary) !important;
+      font-family: 'Inter', sans-serif !important;
     }
     
     /* Page-specific tweaks */
@@ -55,10 +55,11 @@
     
     /* Modern card styles */
     .card {
-      border: 1px solid var(--border-color);
-      border-radius: 0.75rem;
-      box-shadow: 0 1px 3px 0 rgba(0, 0, 0, 0.05);
-      transition: all 0.3s ease;
+      border: 1px solid #EFF2F5 !important;
+      border-radius: 0.75rem !important;
+      box-shadow: 0 1px 3px 0 rgba(0, 0, 0, 0.05) !important;
+      transition: all 0.3s ease !important;
+      background-color: #FFFFFF !important;
     }
     
     .card:hover {
@@ -71,10 +72,10 @@
     }
     
     .card-header {
-      background-color: var(--light-bg);
-      border-bottom: 1px solid var(--border-color);
-      font-weight: 600;
-      padding: 1.25rem;
+      background-color: #F3F6F9 !important;
+      border-bottom: 1px solid #EFF2F5 !important;
+      font-weight: 600 !important;
+      padding: 1.25rem !important;
     }
     
     .card-body {
@@ -145,8 +146,8 @@
       padding: 0.375rem 0.75rem;
     }
     
-    .bg-primary {
-      background-color: var(--info-color) !important;
+    #sidebarMembershipBadge.bg-primary {
+      background-color: #8950FC !important;
     }
     
     .bg-success {
@@ -191,10 +192,10 @@
     /* Sidenav adjustments */
     #main-sidenav {
       overflow-y: auto !important;
-      top: 60px;
-      height: calc(100vh - 60px);
-      background-color: var(--card-bg);
-      border-right: 1px solid var(--border-color);
+      top: 60px !important;
+      height: calc(100vh - 60px) !important;
+      background-color: #FFFFFF !important;
+      border-right: 1px solid #EFF2F5 !important;
     }
     
     #main-sidenav .ps,
@@ -204,27 +205,31 @@
     }
     
     .sidenav-link {
-      color: var(--text-secondary);
-      transition: all 0.2s ease;
-      border-radius: 0.375rem;
-      margin: 0.125rem 0.5rem;
-      padding: 0.75rem 1rem;
+      color: #7E8299 !important;
+      transition: all 0.2s ease !important;
+      border-radius: 0.375rem !important;
+      margin: 0.125rem 0.5rem !important;
+      padding: 0.75rem 1rem !important;
+      background-color: transparent !important;
+      border: none !important;
     }
     
     .sidenav-link:hover {
-      background-color: var(--hover-bg);
-      color: var(--text-primary);
+      background-color: #F3F6F9 !important;
+      color: #181C32 !important;
     }
     
     .sidenav-link.active {
-      background-color: var(--hover-bg);
-      color: var(--text-primary);
-      font-weight: 600;
+      background-color: #F3F6F9 !important;
+      color: #181C32 !important;
+      font-weight: 600 !important;
+      border-right: none !important;
     }
     
     .sidenav-link i {
-      width: 20px;
-      text-align: center;
+      width: 20px !important;
+      text-align: center !important;
+      color: inherit !important;
     }
     
     .sidenav-subheading {
