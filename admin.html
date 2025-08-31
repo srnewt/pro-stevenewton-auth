@@ -506,6 +506,41 @@
 
   <!-- Main Content -->
   <main id="page-content">
+    <!-- PENDING APPROVAL SECTION -->
+    <section id="pending-approval-section" style="display: none;">
+      <div class="container-fluid">
+        <div class="row justify-content-center">
+          <div class="col-md-6">
+            <div class="card border-0 text-center py-5">
+              <div class="card-body">
+                <div class="mb-4">
+                  <i class="fas fa-clock fa-4x text-warning mb-3"></i>
+                  <h3 class="text-dark">Account Pending Approval</h3>
+                </div>
+                <p class="text-muted mb-4">
+                  Thank you for registering! Your account is currently pending approval from an administrator. 
+                  You will receive access to the training materials once your account has been approved.
+                </p>
+                <div class="alert alert-info">
+                  <i class="fas fa-info-circle me-2"></i>
+                  <strong>What's Next?</strong><br>
+                  An admin will review your registration and approve your access shortly. You'll be able to access all content once approved.
+                </div>
+                <button class="btn btn-primary" onclick="checkApprovalStatus()">
+                  <i class="fas fa-sync-alt me-1"></i>Check Status
+                </button>
+                <div class="mt-3">
+                  <button class="btn btn-light" id="logoutBtnPending">
+                    <i class="fas fa-sign-out-alt me-1"></i>Logout
+                  </button>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
     <!-- START HERE SECTION -->
     <section id="start-here-section">
       <div class="d-flex justify-content-between align-items-center mb-4">
@@ -1007,6 +1042,7 @@
             <table class="table">
               <thead>
                 <tr>
+                  <th>Status</th>
                   <th>Email</th>
                   <th>Name</th>
                   <th>Plan</th>
@@ -1016,7 +1052,7 @@
               </thead>
               <tbody id="userManagementTable">
                 <tr>
-                  <td colspan="5" class="text-center text-muted">Click Refresh to load users</td>
+                  <td colspan="6" class="text-center text-muted">Click Refresh to load users</td>
                 </tr>
               </tbody>
             </table>
@@ -1206,6 +1242,24 @@
     function loadUserData(user) {
       const displayName = user.displayName || user.email.split('@')[0];
       
+      // Check if user is approved
+      const userApprovals = JSON.parse(localStorage.getItem('userApprovals') || '{}');
+      const isApproved = userApprovals[user.uid];
+      
+      isAdmin = ADMIN_USERS.includes(user.email);
+      
+      // If user is not approved and not admin, show pending page
+      if (!isApproved && !isAdmin) {
+        showPendingApprovalPage(displayName);
+        return;
+      }
+      
+      // Hide pending approval section and show main content
+      document.getElementById('pending-approval-section').style.display = 'none';
+      document.getElementById('main-sidenav').style.display = 'block';
+      document.querySelector('.navbar').style.display = 'flex';
+      document.getElementById('start-here-section').style.display = 'block';
+      
       document.getElementById('sidebarUserName').textContent = displayName;
       document.getElementById('sidebarUserEmail').textContent = user.email;
       document.getElementById('navbarUserName').textContent = displayName;
@@ -1218,13 +1272,49 @@
 
       storeUserRegistration(user);
 
-      isAdmin = ADMIN_USERS.includes(user.email);
       if (isAdmin) {
         document.getElementById('adminSection').style.display = 'block';
       }
 
       loadUserMembership(user.uid);
     }
+    
+    function showPendingApprovalPage(displayName) {
+      // Hide main navigation and content
+      document.getElementById('main-sidenav').style.display = 'none';
+      document.querySelector('.navbar').style.display = 'none';
+      document.querySelectorAll('section').forEach(s => s.style.display = 'none');
+      
+      // Show pending approval page
+      document.getElementById('pending-approval-section').style.display = 'block';
+      
+      // Set up logout button
+      document.getElementById('logoutBtnPending').addEventListener('click', async () => {
+        try {
+          await signOut(auth);
+          window.location.href = 'index.html';
+        } catch (error) {
+          console.error('Logout error:', error);
+        }
+      });
+    }
+    
+    window.checkApprovalStatus = function() {
+      const user = auth.currentUser;
+      if (!user) return;
+      
+      const userApprovals = JSON.parse(localStorage.getItem('userApprovals') || '{}');
+      const isApproved = userApprovals[user.uid];
+      
+      if (isApproved) {
+        showAlert('Your account has been approved! Reloading...', 'success');
+        setTimeout(() => {
+          window.location.reload();
+        }, 1500);
+      } else {
+        showAlert('Your account is still pending approval. Please check back later.', 'info');
+      }
+    };
 
     function loadUserMembership(userId) {
       const userMemberships = JSON.parse(localStorage.getItem('userMemberships') || '{}');
@@ -1423,16 +1513,29 @@
       if (!tableBody) return;
       
       if (registeredUsers.length === 0) {
-        tableBody.innerHTML = '<tr><td colspan="5" class="text-center text-muted">No users found</td></tr>';
+        tableBody.innerHTML = '<tr><td colspan="6" class="text-center text-muted">No users found</td></tr>';
         return;
       }
       
       tableBody.innerHTML = '';
       
+      const userApprovals = JSON.parse(localStorage.getItem('userApprovals') || '{}');
+      
       registeredUsers.forEach(user => {
         const membership = userMemberships[user.uid] || 'free';
+        const isApproved = userApprovals[user.uid] || false;
         const row = `
           <tr>
+            <td>
+              <div class="form-check form-switch">
+                <input class="form-check-input" type="checkbox" id="approval_${user.uid}" 
+                       ${isApproved ? 'checked' : ''} 
+                       onchange="toggleUserApproval('${user.uid}', this.checked)">
+                <label class="form-check-label" for="approval_${user.uid}" style="font-size: 0.8rem;">
+                  ${isApproved ? 'Access' : 'Requested'}
+                </label>
+              </div>
+            </td>
             <td>${user.email}</td>
             <td>${user.displayName || 'Not set'}</td>
             <td>
@@ -1445,7 +1548,7 @@
             </td>
             <td>${new Date(user.createdAt).toLocaleDateString()}</td>
             <td>
-              <button class="btn btn-sm btn-outline-primary">
+              <button class="btn btn-sm btn-light">
                 <i class="fas fa-eye"></i>
               </button>
             </td>
@@ -1485,6 +1588,35 @@
       showAlert(`Membership updated to ${newLevel.toUpperCase()} successfully!`, 'success');
     };
 
+    window.toggleUserApproval = function(userId, isApproved) {
+      if (!isAdmin) {
+        showAlert('Admin access required', 'danger');
+        return;
+      }
+      
+      console.log('Toggling approval for user:', userId, 'to:', isApproved);
+      
+      const userApprovals = JSON.parse(localStorage.getItem('userApprovals') || '{}');
+      userApprovals[userId] = isApproved;
+      localStorage.setItem('userApprovals', JSON.stringify(userApprovals));
+      
+      // Update the label text
+      const label = document.querySelector(`label[for="approval_${userId}"]`);
+      if (label) {
+        label.textContent = isApproved ? 'Access' : 'Requested';
+      }
+      
+      // If this is the current user and they're being denied access, redirect them
+      if (auth.currentUser && auth.currentUser.uid === userId && !isApproved) {
+        showAlert('User access has been revoked', 'warning');
+        setTimeout(() => {
+          window.location.reload();
+        }, 1000);
+      }
+      
+      showAlert(`User access ${isApproved ? 'approved' : 'revoked'} successfully!`, 'success');
+    };
+
     function storeUserRegistration(user) {
       const registeredUsers = JSON.parse(localStorage.getItem('registeredUsers') || '[]');
       const userExists = registeredUsers.find(u => u.uid === user.uid);
@@ -1497,6 +1629,16 @@
           createdAt: user.metadata.creationTime
         });
         localStorage.setItem('registeredUsers', JSON.stringify(registeredUsers));
+        
+        // Auto-approve admin users, new regular users start as pending
+        const userApprovals = JSON.parse(localStorage.getItem('userApprovals') || '{}');
+        if (!userApprovals.hasOwnProperty(user.uid)) {
+          const isAutoApproved = ADMIN_USERS.includes(user.email);
+          userApprovals[user.uid] = isAutoApproved;
+          localStorage.setItem('userApprovals', JSON.stringify(userApprovals));
+          
+          console.log(`User ${user.email} registered with approval status:`, isAutoApproved);
+        }
       }
     }
 
