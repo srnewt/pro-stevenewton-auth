@@ -3,102 +3,368 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
-  <title>pro.stevenewton.me</title>
+  <title>pro.stevenewton.me - Login</title>
   <!-- MDB local CSS -->
   <link rel="stylesheet" href="css/mdb.min.css"/>
   <!-- Font Awesome -->
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css"/>
   <!-- Google Fonts Inter -->
-  <link rel="preconnect" href="https://fonts.googleapis.com" />
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-  <link href="https://fonts.googleapis.com/css2?family=Inter:ital,opsz,wght@0,14..32,100..900;1,14..32,100..900&display=swap" rel="stylesheet" />
-  <!-- Your overrides -->
-  <link rel="stylesheet" href="css/admin.css"/>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:ital,opsz,wght@0,14..32,100..900;1,14..32,100..900&display=swap" rel="stylesheet">
+  <!-- Your custom overrides -->
   <link rel="stylesheet" href="css/modern-overrides.css"/>
-
+  
   <style>
-    /* Page‑specific tweaks */
-    #page-content {
-      padding: 2rem;
-      transition: margin-left .3s;
+    body {
+      font-family: 'Inter', sans-serif;
+      background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+      min-height: 100vh;
+      display: flex;
+      align-items: center;
+      justify-content: center;
     }
-    @media (min-width: 992px) { #page-content { margin-left: 260px; } }
-
-    /* Full‑height iframe */
-    .notion-embed-container {
+    
+    .login-card {
+      max-width: 400px;
       width: 100%;
-      height: calc(100vh - 250px);
-      border-radius: .5rem;
-      overflow: hidden;
+      margin: 20px;
     }
-    .notion-embed-container iframe { width: 100%; height: 100%; border: none; }
-
-    /* Stop inner scrolling produced by PerfectScrollbar */
-    #main-sidenav { overflow-y: visible !important; }
-    #main-sidenav .ps,
-    #main-sidenav .ps__rail-y,
-    #main-sidenav .ps__thumb-y { display: none !important; }
-
-    /* Stretch sales‑fundamentals card so iframe fills */
-    #sales-fundamentals-page .card,
-    #sales-fundamentals-page .card-body { height: 100%; }
+    
+    .brand-logo {
+      max-width: 80px;
+      margin-bottom: 20px;
+    }
+    
+    .form-outline {
+      margin-bottom: 1.5rem;
+    }
+    
+    .alert {
+      margin-top: 1rem;
+    }
   </style>
 </head>
-<body class="bg-light">
-  <!-- Sidebar toggler (mobile) -->
-  <button id="sidenav-toggler" class="btn btn-primary m-3 d-lg-none" data-mdb-toggle="sidenav" data-mdb-target="#main-sidenav">
-    <i class="fas fa-bars"></i>
-  </button>
+<body>
+  <div class="login-card">
+    <div class="card shadow-lg">
+      <div class="card-body p-5">
+        <!-- Logo and Title -->
+        <div class="text-center mb-4">
+          <img src="img/srn.png" alt="Logo" class="brand-logo" />
+          <h3 class="mt-3">Welcome Back</h3>
+          <p class="text-muted">Sign in to access your sales training</p>
+        </div>
 
-  <!-- MDB Sidenav -->
-  <nav id="main-sidenav" class="sidenav bg-white" data-mdb-sidenav-init data-mdb-mode="side" data-mdb-hidden="false">
-    <!-- Header -->
-    <div class="pt-4 px-3">
-      <img src="img/srn.png" class="img-fluid mb-3" style="max-width:50px" alt="Logo"/>
-      <h6 class="mb-0" id="sidebarUserName">User</h6>
-      <p class="text-muted small" id="sidebarUserEmail">user@example.com</p>
-      <span class="badge bg-primary" id="sidebarMembershipBadge">Free Member</span>
-    </div>
-    <hr class="mb-0"/>
+        <!-- Login Form -->
+        <form id="loginForm">
+          <div class="form-outline mb-4">
+            <input type="email" id="loginEmail" class="form-control" required />
+            <label class="form-label" for="loginEmail">Email address</label>
+          </div>
 
-    <!-- Menu (no PerfectScrollbar wrapper) -->
-    <div class="h-100">
-      <ul class="sidenav-menu">
-        <!-- … all your <li> items stay unchanged … -->
-      </ul>
-    </div>
-  </nav>
+          <div class="form-outline mb-4">
+            <input type="password" id="loginPassword" class="form-control" required />
+            <label class="form-label" for="loginPassword">Password</label>
+          </div>
 
-  <!-- Top Navbar (search bar removed) -->
-  <nav class="navbar navbar-expand-lg navbar-light bg-white shadow-sm">
-    <div class="container-fluid d-flex justify-content-end align-items-center">
-      <!-- Notifications -->
-      <div class="dropdown me-3">
-        <button class="btn btn-link position-relative" type="button" data-mdb-dropdown-toggle>
-          <i class="fas fa-bell"></i>
-          <span class="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-danger">1</span>
-        </button>
-        <ul class="dropdown-menu dropdown-menu-end">
-          <li><a class="dropdown-item" href="#">Welcome to pro.sn!</a></li>
-          <li><a class="dropdown-item" href="#">System running smoothly</a></li>
-        </ul>
+          <div class="row mb-4">
+            <div class="col d-flex justify-content-start">
+              <div class="form-check">
+                <input class="form-check-input" type="checkbox" value="" id="rememberMe" />
+                <label class="form-check-label" for="rememberMe">Remember me</label>
+              </div>
+            </div>
+            <div class="col text-end">
+              <a href="#" onclick="showResetPassword()">Forgot password?</a>
+            </div>
+          </div>
+
+          <button type="submit" class="btn btn-primary btn-block mb-4" data-mdb-ripple-init>
+            <i class="fas fa-sign-in-alt me-2"></i>Sign in
+          </button>
+
+          <div class="text-center">
+            <p>Don't have an account? <a href="#" onclick="showRegisterForm()">Register</a></p>
+          </div>
+        </form>
+
+        <!-- Registration Form (hidden by default) -->
+        <form id="registerForm" style="display: none;">
+          <div class="form-outline mb-4">
+            <input type="text" id="registerName" class="form-control" required />
+            <label class="form-label" for="registerName">Full Name</label>
+          </div>
+
+          <div class="form-outline mb-4">
+            <input type="email" id="registerEmail" class="form-control" required />
+            <label class="form-label" for="registerEmail">Email address</label>
+          </div>
+
+          <div class="form-outline mb-4">
+            <input type="password" id="registerPassword" class="form-control" required />
+            <label class="form-label" for="registerPassword">Password</label>
+          </div>
+
+          <div class="form-outline mb-4">
+            <input type="password" id="registerConfirmPassword" class="form-control" required />
+            <label class="form-label" for="registerConfirmPassword">Confirm Password</label>
+          </div>
+
+          <button type="submit" class="btn btn-success btn-block mb-4" data-mdb-ripple-init>
+            <i class="fas fa-user-plus me-2"></i>Create Account
+          </button>
+
+          <div class="text-center">
+            <p>Already have an account? <a href="#" onclick="showLoginForm()">Sign in</a></p>
+          </div>
+        </form>
+
+        <!-- Password Reset Form (hidden by default) -->
+        <form id="resetForm" style="display: none;">
+          <p class="text-muted mb-4">Enter your email address and we'll send you a password reset link.</p>
+          
+          <div class="form-outline mb-4">
+            <input type="email" id="resetEmail" class="form-control" required />
+            <label class="form-label" for="resetEmail">Email address</label>
+          </div>
+
+          <button type="submit" class="btn btn-warning btn-block mb-4" data-mdb-ripple-init>
+            <i class="fas fa-envelope me-2"></i>Send Reset Link
+          </button>
+
+          <div class="text-center">
+            <p>Remember your password? <a href="#" onclick="showLoginForm()">Sign in</a></p>
+          </div>
+        </form>
+
+        <!-- Alert Container -->
+        <div id="alertContainer"></div>
       </div>
-      <!-- User -->
-      <div class="d-flex align-items-center">
-        <i class="fas fa-user-circle me-2 text-muted"></i>
-        <span id="navbarUserName" class="text-muted">User</span>
-      </div>
     </div>
-  </nav>
+  </div>
 
-  <!-- Main Content -->
-  <main id="page-content">
-    <!-- … all existing <section> blocks remain unchanged … -->
-  </main>
-
-  <!-- Profile Modal, scripts, Firebase etc. remain exactly as before -->
   <!-- MDB local JS -->
   <script src="js/mdb.umd.min.js"></script>
-  <!-- The rest of your original <script> blocks go here without modification -->
+  
+  <script>
+    // Initialize MDB components
+    document.addEventListener('DOMContentLoaded', function() {
+      if (typeof mdb !== 'undefined') {
+        // Initialize all input fields
+        document.querySelectorAll('.form-outline').forEach((formOutline) => {
+          new mdb.Input(formOutline).init();
+        });
+        
+        // Initialize ripple effects
+        document.querySelectorAll('[data-mdb-ripple-init]').forEach((element) => {
+          new mdb.Ripple(element);
+        });
+      }
+    });
+
+    // Form switching functions
+    function showLoginForm() {
+      document.getElementById('loginForm').style.display = 'block';
+      document.getElementById('registerForm').style.display = 'none';
+      document.getElementById('resetForm').style.display = 'none';
+      clearAlerts();
+    }
+
+    function showRegisterForm() {
+      document.getElementById('loginForm').style.display = 'none';
+      document.getElementById('registerForm').style.display = 'block';
+      document.getElementById('resetForm').style.display = 'none';
+      clearAlerts();
+    }
+
+    function showResetPassword() {
+      document.getElementById('loginForm').style.display = 'none';
+      document.getElementById('registerForm').style.display = 'none';
+      document.getElementById('resetForm').style.display = 'block';
+      clearAlerts();
+    }
+
+    function showAlert(message, type = 'info') {
+      const alertContainer = document.getElementById('alertContainer');
+      alertContainer.innerHTML = `
+        <div class="alert alert-${type} alert-dismissible fade show" role="alert">
+          ${message}
+          <button type="button" class="btn-close" data-mdb-dismiss="alert" aria-label="Close"></button>
+        </div>
+      `;
+      
+      // Auto-dismiss after 5 seconds
+      setTimeout(() => {
+        clearAlerts();
+      }, 5000);
+    }
+
+    function clearAlerts() {
+      document.getElementById('alertContainer').innerHTML = '';
+    }
+  </script>
+
+  <!-- Firebase Configuration and Authentication -->
+  <script type="module">
+    import { initializeApp } from 'https://www.gstatic.com/firebasejs/10.7.1/firebase-app.js';
+    import { 
+      getAuth, 
+      signInWithEmailAndPassword,
+      createUserWithEmailAndPassword,
+      sendPasswordResetEmail,
+      onAuthStateChanged,
+      updateProfile,
+      sendEmailVerification
+    } from 'https://www.gstatic.com/firebasejs/10.7.1/firebase-auth.js';
+
+    // Firebase configuration
+    const firebaseConfig = {
+      apiKey: "AIzaSyBddP6AW0CG6xyJ4r7_4q_ZZ_6mnH0kjsE",
+      authDomain: "prosnme.firebaseapp.com",
+      projectId: "prosnme",
+      storageBucket: "prosnme.firebasestorage.app",
+      messagingSenderId: "1043834100115",
+      appId: "1:1043834100115:web:b760f6968c7998a0a3b066"
+    };
+
+    // Initialize Firebase
+    const app = initializeApp(firebaseConfig);
+    const auth = getAuth(app);
+
+    // Check if user is already logged in
+    onAuthStateChanged(auth, (user) => {
+      if (user) {
+        // User is signed in, redirect to admin page
+        window.location.href = 'admin.html';
+      }
+    });
+
+    // Login form handler
+    document.getElementById('loginForm').addEventListener('submit', async (e) => {
+      e.preventDefault();
+      
+      const email = document.getElementById('loginEmail').value;
+      const password = document.getElementById('loginPassword').value;
+      
+      try {
+        const userCredential = await signInWithEmailAndPassword(auth, email, password);
+        showAlert('Login successful! Redirecting...', 'success');
+        
+        // Redirect to admin page
+        setTimeout(() => {
+          window.location.href = 'admin.html';
+        }, 1000);
+        
+      } catch (error) {
+        console.error('Login error:', error);
+        let errorMessage = 'Login failed. Please try again.';
+        
+        if (error.code === 'auth/user-not-found') {
+          errorMessage = 'No account found with this email address.';
+        } else if (error.code === 'auth/wrong-password') {
+          errorMessage = 'Incorrect password. Please try again.';
+        } else if (error.code === 'auth/invalid-email') {
+          errorMessage = 'Invalid email address format.';
+        } else if (error.code === 'auth/too-many-requests') {
+          errorMessage = 'Too many failed attempts. Please try again later.';
+        }
+        
+        showAlert(errorMessage, 'danger');
+      }
+    });
+
+    // Registration form handler
+    document.getElementById('registerForm').addEventListener('submit', async (e) => {
+      e.preventDefault();
+      
+      const name = document.getElementById('registerName').value;
+      const email = document.getElementById('registerEmail').value;
+      const password = document.getElementById('registerPassword').value;
+      const confirmPassword = document.getElementById('registerConfirmPassword').value;
+      
+      // Validate passwords match
+      if (password !== confirmPassword) {
+        showAlert('Passwords do not match!', 'danger');
+        return;
+      }
+      
+      // Validate password strength
+      if (password.length < 6) {
+        showAlert('Password must be at least 6 characters long.', 'danger');
+        return;
+      }
+      
+      try {
+        // Create user account
+        const userCredential = await createUserWithEmailAndPassword(auth, email, password);
+        const user = userCredential.user;
+        
+        // Update user profile with display name
+        await updateProfile(user, {
+          displayName: name
+        });
+        
+        // Send email verification
+        await sendEmailVerification(user);
+        
+        showAlert('Account created successfully! Please check your email to verify your account.', 'success');
+        
+        // Redirect to admin page after 2 seconds
+        setTimeout(() => {
+          window.location.href = 'admin.html';
+        }, 2000);
+        
+      } catch (error) {
+        console.error('Registration error:', error);
+        let errorMessage = 'Registration failed. Please try again.';
+        
+        if (error.code === 'auth/email-already-in-use') {
+          errorMessage = 'An account already exists with this email address.';
+        } else if (error.code === 'auth/invalid-email') {
+          errorMessage = 'Invalid email address format.';
+        } else if (error.code === 'auth/weak-password') {
+          errorMessage = 'Password is too weak. Please use a stronger password.';
+        }
+        
+        showAlert(errorMessage, 'danger');
+      }
+    });
+
+    // Password reset form handler
+    document.getElementById('resetForm').addEventListener('submit', async (e) => {
+      e.preventDefault();
+      
+      const email = document.getElementById('resetEmail').value;
+      
+      try {
+        await sendPasswordResetEmail(auth, email);
+        showAlert('Password reset email sent! Check your inbox.', 'success');
+        
+        // Switch back to login form after 3 seconds
+        setTimeout(() => {
+          showLoginForm();
+        }, 3000);
+        
+      } catch (error) {
+        console.error('Password reset error:', error);
+        let errorMessage = 'Failed to send reset email. Please try again.';
+        
+        if (error.code === 'auth/user-not-found') {
+          errorMessage = 'No account found with this email address.';
+        } else if (error.code === 'auth/invalid-email') {
+          errorMessage = 'Invalid email address format.';
+        }
+        
+        showAlert(errorMessage, 'danger');
+      }
+    });
+
+    // Make functions globally available
+    window.showLoginForm = showLoginForm;
+    window.showRegisterForm = showRegisterForm;
+    window.showResetPassword = showResetPassword;
+    window.showAlert = showAlert;
+  </script>
 </body>
 </html>
