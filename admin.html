@@ -232,6 +232,25 @@
       color: inherit !important;
     }
     
+    /* Accordion arrow animation */
+    .sidenav-link .fa-angle-down {
+      transition: transform 0.3s ease !important;
+    }
+    
+    .sidenav-link[aria-expanded="true"] .fa-angle-down {
+      transform: rotate(180deg) !important;
+    }
+    
+    /* Nested navigation items */
+    .sidenav-menu .sidenav-menu {
+      background-color: #F8F9FA !important;
+    }
+    
+    .sidenav-menu .sidenav-menu .sidenav-link {
+      padding: 0.5rem 1rem 0.5rem 2rem !important;
+      font-size: 0.8rem !important;
+    }
+    
     .sidenav-subheading {
       padding: 0.75rem 1rem;
       font-size: 0.75rem;
@@ -400,32 +419,53 @@
         </a>
       </li>
       
+      <!-- Content Library with Accordion -->
       <li class="sidenav-item">
-        <a class="sidenav-link" onclick="navigateToSection('content-section', this)">
+        <a class="sidenav-link" data-mdb-collapse-init data-mdb-target="#contentCollapse" aria-expanded="false" aria-controls="contentCollapse">
           <i class="fas fa-book fa-fw me-3"></i><span>Content Library</span>
+          <i class="fas fa-angle-down ms-auto"></i>
         </a>
+        <div class="collapse" id="contentCollapse">
+          <ul class="sidenav-menu ps-3">
+            <li class="sidenav-item">
+              <a class="sidenav-link" onclick="showContentPage('sales-fundamentals')">
+                <i class="fas fa-circle fa-fw me-3" style="font-size: 0.5rem;"></i><span>Sales Fundamentals</span>
+              </a>
+            </li>
+            <li class="sidenav-item">
+              <a class="sidenav-link" onclick="showContentPage('intro-crm')">
+                <i class="fas fa-circle fa-fw me-3" style="font-size: 0.5rem;"></i><span>Introduction to CRM</span>
+              </a>
+            </li>
+          </ul>
+        </div>
       </li>
       
-      <!-- Pro Content -->
+      <!-- Premium Content -->
       <li class="sidenav-item">
-        <a class="sidenav-link text-muted" onclick="navigateToSection('pro1-section', this)" id="pro1-nav">
-          <i class="fas fa-star fa-fw me-3"></i><span>Pro 1</span>
-          <i class="fas fa-lock ms-auto" id="pro1-lock"></i>
+        <a class="sidenav-link text-muted" data-mdb-collapse-init data-mdb-target="#premiumCollapse" aria-expanded="false" aria-controls="premiumCollapse" id="premium-nav">
+          <i class="fas fa-crown fa-fw me-3"></i><span>Premium</span>
+          <i class="fas fa-lock ms-auto" id="premium-lock"></i>
         </a>
-      </li>
-      
-      <li class="sidenav-item">
-        <a class="sidenav-link text-muted" onclick="navigateToSection('pro2-section', this)" id="pro2-nav">
-          <i class="fas fa-trophy fa-fw me-3"></i><span>Pro 2</span>
-          <i class="fas fa-lock ms-auto" id="pro2-lock"></i>
-        </a>
-      </li>
-      
-      <li class="sidenav-item">
-        <a class="sidenav-link text-muted" onclick="navigateToSection('pro3-section', this)" id="pro3-nav">
-          <i class="fas fa-crown fa-fw me-3"></i><span>Pro 3</span>
-          <i class="fas fa-lock ms-auto" id="pro3-lock"></i>
-        </a>
+        <div class="collapse" id="premiumCollapse">
+          <ul class="sidenav-menu ps-3">
+            <li class="sidenav-item">
+              <a class="sidenav-link text-muted" onclick="navigateToSection('pro1-section', this)" id="pro1-nav">
+                <i class="fas fa-circle fa-fw me-3" style="font-size: 0.5rem;"></i><span>Advanced Techniques</span>
+              </a>
+            </li>
+            <li class="sidenav-item">
+              <a class="sidenav-link text-muted" onclick="navigateToSection('pro2-section', this)" id="pro2-nav">
+                <i class="fas fa-circle fa-fw me-3" style="font-size: 0.5rem;"></i><span>Enterprise Sales</span>
+              </a>
+            </li>
+            <li class="sidenav-item">
+              <a class="sidenav-link text-muted" onclick="navigateToSection('pro3-section', this)" id="pro3-nav">
+                <i class="fas fa-circle fa-fw me-3" style="font-size: 0.5rem;"></i><span>Sales Leadership</span>
+              </a>
+            </li>
+          </ul>
+        </div>
       </li>
       
       <hr class="m-0">
@@ -754,27 +794,61 @@
       </div>
     </section>
 
+    <!-- PRO 2 SECTION - Enterprise Sales -->
     <section id="pro2-section" style="display: none;">
-      <div class="text-center py-5">
-        <div class="card">
-          <div class="card-body py-5">
-            <i class="fas fa-lock fa-4x text-muted mb-4"></i>
-            <h4>Pro 2 Access Required</h4>
-            <p class="text-muted mb-4">Upgrade to Pro 2 to access this premium content.</p>
-            <button class="btn btn-primary" onclick="showUpgradeOptions()">Upgrade Now</button>
+      <div class="d-flex align-items-center mb-4">
+        <button class="btn btn-light btn-sm me-3" onclick="navigateToSection('start-here-section')">
+          <i class="fas fa-arrow-left me-1"></i>Back
+        </button>
+        <h2><i class="fas fa-trophy me-2"></i>Enterprise Sales Strategies</h2>
+      </div>
+
+      <div class="card">
+        <div class="card-header">
+          <h6 class="mb-0">Advanced Enterprise Sales Training</h6>
+        </div>
+        <div class="card-body">
+          <p class="mb-4">Master enterprise-level sales strategies and advanced negotiation techniques.</p>
+          
+          <!-- Notion Embed -->
+          <div class="notion-embed-container">
+            <iframe
+              src="https://tripkicks.notion.site/ebd/2d77037c640d4672b955ffd28b0d57b5"
+              width="100%"
+              height="600"
+              frameborder="0"
+              allowfullscreen>
+            </iframe>
           </div>
         </div>
       </div>
     </section>
 
+    <!-- PRO 3 SECTION - Sales Leadership -->
     <section id="pro3-section" style="display: none;">
-      <div class="text-center py-5">
-        <div class="card">
-          <div class="card-body py-5">
-            <i class="fas fa-lock fa-4x text-muted mb-4"></i>
-            <h4>Pro 3 Access Required</h4>
-            <p class="text-muted mb-4">Upgrade to Pro 3 to access this premium content.</p>
-            <button class="btn btn-primary" onclick="showUpgradeOptions()">Upgrade Now</button>
+      <div class="d-flex align-items-center mb-4">
+        <button class="btn btn-light btn-sm me-3" onclick="navigateToSection('start-here-section')">
+          <i class="fas fa-arrow-left me-1"></i>Back
+        </button>
+        <h2><i class="fas fa-crown me-2"></i>Sales Leadership & Management</h2>
+      </div>
+
+      <div class="card">
+        <div class="card-header">
+          <h6 class="mb-0">Leadership and Team Management</h6>
+        </div>
+        <div class="card-body">
+          <p class="mb-4">Develop leadership skills and learn to manage high-performing sales teams.</p>
+          
+          <!-- Notion Embed -->
+          <div class="notion-embed-container">
+            <iframe
+              src="https://tripkicks.notion.site/ebd/25d53105e6858020b13ed656e8be3c92"
+              width="100%"
+              height="600"
+              frameborder="0"
+              allowfullscreen>
+            </iframe>
           </div>
         </div>
       </div>
@@ -952,6 +1026,11 @@
           new mdb.Dropdown(dropdown);
         });
         
+        // Initialize collapse for navigation accordions
+        document.querySelectorAll('[data-mdb-collapse-init]').forEach(collapseEl => {
+          new mdb.Collapse(collapseEl);
+        });
+        
         // Initialize modals
         document.querySelectorAll('.modal').forEach(modal => {
           new mdb.Modal(modal);
@@ -972,6 +1051,20 @@
     }
     
     function navigateToSection(sectionId, linkElement) {
+      // Check access for premium sections
+      if (sectionId === 'pro1-section' && !hasAccess(MEMBERSHIP_LEVELS.PRO1)) {
+        showUpgradeOptions();
+        return;
+      }
+      if (sectionId === 'pro2-section' && !hasAccess(MEMBERSHIP_LEVELS.PRO2)) {
+        showUpgradeOptions();
+        return;
+      }
+      if (sectionId === 'pro3-section' && !hasAccess(MEMBERSHIP_LEVELS.PRO3)) {
+        showUpgradeOptions();
+        return;
+      }
+      
       // Hide all sections
       document.querySelectorAll('section').forEach(s => s.style.display = 'none');
       
@@ -1097,22 +1190,39 @@
     }
 
     function updateSidebarAccess() {
-      const proNavs = ['pro1-nav', 'pro2-nav', 'pro3-nav'];
-      const proLocks = ['pro1-lock', 'pro2-lock', 'pro3-lock'];
-      const levels = [MEMBERSHIP_LEVELS.PRO1, MEMBERSHIP_LEVELS.PRO2, MEMBERSHIP_LEVELS.PRO3];
+      // Update Premium section access
+      const premiumNav = document.getElementById('premium-nav');
+      const premiumLock = document.getElementById('premium-lock');
       
-      proNavs.forEach((navId, index) => {
-        const nav = document.getElementById(navId);
-        const lock = document.getElementById(proLocks[index]);
+      // Check if user has any premium access
+      const hasAnyPremium = hasAccess(MEMBERSHIP_LEVELS.PRO1) || 
+                           hasAccess(MEMBERSHIP_LEVELS.PRO2) || 
+                           hasAccess(MEMBERSHIP_LEVELS.PRO3);
+      
+      if (hasAnyPremium) {
+        premiumNav.classList.remove('text-muted');
+        premiumLock.style.display = 'none';
         
-        if (hasAccess(levels[index])) {
-          nav.classList.remove('text-muted');
-          lock.style.display = 'none';
-        } else {
-          nav.classList.add('text-muted');
-          lock.style.display = 'inline';
-        }
-      });
+        // Show/hide individual premium items based on access
+        const proNavs = ['pro1-nav', 'pro2-nav', 'pro3-nav'];
+        const levels = [MEMBERSHIP_LEVELS.PRO1, MEMBERSHIP_LEVELS.PRO2, MEMBERSHIP_LEVELS.PRO3];
+        
+        proNavs.forEach((navId, index) => {
+          const nav = document.getElementById(navId);
+          if (nav) {
+            if (hasAccess(levels[index])) {
+              nav.classList.remove('text-muted');
+              nav.style.display = 'block';
+            } else {
+              nav.classList.add('text-muted');
+              nav.style.display = 'none'; // Hide inaccessible premium content
+            }
+          }
+        });
+      } else {
+        premiumNav.classList.add('text-muted');
+        premiumLock.style.display = 'inline';
+      }
     }
 
     function hasAccess(requiredLevel) {
@@ -1279,16 +1389,28 @@
         return;
       }
       
+      console.log('Changing membership for user:', userId, 'to level:', newLevel);
+      
       const userMemberships = JSON.parse(localStorage.getItem('userMemberships') || '{}');
       userMemberships[userId] = newLevel;
       localStorage.setItem('userMemberships', JSON.stringify(userMemberships));
       
+      console.log('Updated userMemberships:', userMemberships);
+      
+      // If this is the current user, update their membership immediately
       if (auth.currentUser && auth.currentUser.uid === userId) {
+        console.log('Updating current user membership to:', newLevel);
         currentUserMembership = newLevel;
         updateMembershipUI();
+        updateSidebarAccess();
+        
+        // Force refresh the user list to show the change
+        setTimeout(() => {
+          refreshUserList();
+        }, 100);
       }
       
-      showAlert('Membership updated successfully!', 'success');
+      showAlert(`Membership updated to ${newLevel.toUpperCase()} successfully!`, 'success');
     };
 
     function storeUserRegistration(user) {
