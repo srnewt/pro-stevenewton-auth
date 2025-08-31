@@ -12,17 +12,15 @@
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Inter:ital,opsz,wght@0,14..32,100..900;1,14..32,100..900&display=swap" rel="stylesheet">
+  <!-- Your custom overrides -->
+  <link rel="stylesheet" href="css/modern-overrides.css"/>
   
   <style>
-    body {
-      font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
-    }
-    
-    /* Main content breathing room when sidenav is in "side" mode */
+    /* Page-specific tweaks */
     #page-content {
       padding: 2rem;
       transition: margin-left .3s;
-      margin-top: 60px; /* Add top margin for fixed navbar */
+      margin-top: 60px; /* Account for fixed navbar */
     }
     
     @media (min-width: 992px) {
@@ -31,7 +29,7 @@
       }
     }
     
-    /* Simple iframe container */
+    /* Full-height iframe */
     .notion-embed-container {
       width: 100%;
       height: calc(100vh - 250px);
@@ -45,10 +43,11 @@
       border: none;
     }
     
+    /* Sidenav adjustments */
     #main-sidenav {
       overflow-y: auto !important;
-      top: 60px; /* Position below navbar */
-      height: calc(100vh - 60px); /* Adjust height to account for navbar */
+      top: 60px;
+      height: calc(100vh - 60px);
     }
     
     #main-sidenav .ps,
@@ -56,98 +55,69 @@
     #main-sidenav .ps__thumb-y {
       display: none !important;
     }
-
+    
+    /* Stretch sales-fundamentals card */
     #sales-fundamentals-page .card,
     #sales-fundamentals-page .card-body {
       height: 100%;
     }
     
-    /* Fix navbar positioning */
+    /* Fixed navbar */
     .navbar {
+      position: fixed;
+      top: 0;
+      left: 0;
+      right: 0;
       z-index: 1030;
-    }
-    
-    /* Ensure dropdown menus appear above other elements */
-    .dropdown-menu {
-      z-index: 1050;
+      height: 60px;
     }
   </style>
 </head>
 
 <body class="bg-light">
-  <!-- TOP NAVBAR -->
-  <nav class="navbar navbar-expand-lg bg-body-tertiary fixed-top shadow-sm">
+  <!-- Top Navbar -->
+  <nav class="navbar navbar-expand-lg navbar-light bg-white shadow-sm">
     <div class="container-fluid">
-      <!-- Brand/logo -->
-      <a class="navbar-brand d-flex align-items-center" href="/">
+      <!-- Brand -->
+      <a class="navbar-brand d-flex align-items-center" href="#">
         <img src="img/srn.png" height="30" alt="Logo" class="me-2" />
         <span class="fw-semibold">Sales Training</span>
       </a>
-
-      <!-- Mobile hamburger for navbar items -->
-      <button
-        class="navbar-toggler"
-        type="button"
-        data-mdb-collapse-init
-        data-mdb-target="#mainNavbar"
-        aria-controls="mainNavbar"
-        aria-expanded="false"
-        aria-label="Toggle navigation">
-        <i class="fas fa-bars"></i>
-      </button>
-
-      <!-- Collapsible content -->
-      <div class="collapse navbar-collapse" id="mainNavbar">
-        <!-- Left nav items -->
-        <ul class="navbar-nav me-auto mb-2 mb-lg-0">
-          <li class="nav-item d-lg-none">
-            <a class="nav-link" href="#" onclick="toggleSidenav()">
-              <i class="fas fa-bars me-2"></i>Menu
-            </a>
-          </li>
-        </ul>
-
-        <!-- Right side content -->
+      
+      <!-- Right side -->
+      <div class="d-flex align-items-center ms-auto">
+        <!-- Notifications -->
+        <div class="dropdown me-3">
+          <button class="btn btn-link position-relative" type="button" id="notificationDropdown" data-mdb-dropdown-init>
+            <i class="fas fa-bell"></i>
+            <span class="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-danger">1</span>
+          </button>
+          <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="notificationDropdown">
+            <li><a class="dropdown-item" href="#">Welcome to pro.sn!</a></li>
+            <li><a class="dropdown-item" href="#">System running smoothly</a></li>
+          </ul>
+        </div>
+        
+        <!-- User info -->
         <div class="d-flex align-items-center">
-          <!-- Notifications -->
-          <div class="dropdown me-3">
-            <button class="btn btn-link position-relative" type="button" id="notificationDropdown" data-mdb-dropdown-init data-mdb-ripple-init>
-              <i class="fas fa-bell"></i>
-              <span class="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-danger">1</span>
-            </button>
-            <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="notificationDropdown">
-              <li><a class="dropdown-item" href="#">Welcome to pro.sn!</a></li>
-              <li><a class="dropdown-item" href="#">System running smoothly</a></li>
-            </ul>
-          </div>
-
-          <!-- User info -->
-          <div class="d-flex align-items-center">
-            <i class="fas fa-user-circle me-2 text-muted"></i>
-            <span id="navbarUserName" class="text-muted">User</span>
-          </div>
+          <i class="fas fa-user-circle me-2 text-muted"></i>
+          <span id="navbarUserName" class="text-muted">User</span>
         </div>
       </div>
     </div>
   </nav>
 
-  <!-- Sidebar Toggler (visible on small viewports) -->
-  <button
-    id="sidenav-toggler"
-    class="btn btn-primary m-3 d-lg-none position-fixed"
-    style="top: 60px; z-index: 1029;"
+  <!-- Sidebar Toggler (mobile) -->
+  <button 
+    id="sidenav-toggler" 
+    class="btn btn-primary position-fixed d-lg-none" 
+    style="top: 70px; left: 10px; z-index: 1029;"
     onclick="toggleSidenav()">
     <i class="fas fa-bars"></i>
   </button>
 
   <!-- MDB Sidenav -->
-  <nav
-    id="main-sidenav"
-    class="sidenav bg-white"
-    data-mdb-sidenav-init
-    data-mdb-mode="side"
-    data-mdb-hidden="false">
-    
+  <nav id="main-sidenav" class="sidenav bg-white" data-mdb-sidenav-init data-mdb-mode="side" data-mdb-hidden="false">
     <!-- Header -->
     <div class="pt-4 px-3">
       <img src="img/srn.png" class="img-fluid mb-3" style="max-width: 50px;" alt="Logo"/>
@@ -156,8 +126,8 @@
       <span class="badge bg-primary" id="sidebarMembershipBadge">Free Member</span>
     </div>
     <hr class="mb-0"/>
-
-    <!-- Scrollable menu container -->
+    
+    <!-- Menu -->
     <div class="h-100">
       <ul class="sidenav-menu">
         <li class="sidenav-item">
@@ -171,48 +141,48 @@
             <i class="fas fa-bullhorn me-3"></i>Announcements
           </a>
         </li>
-
+        
         <li class="sidenav-item">
           <a class="sidenav-link" onclick="navigateToSection('content-section', this)">
             <i class="fas fa-book me-3"></i>Content Library
           </a>
         </li>
-
+        
         <li class="sidenav-item">
           <a class="sidenav-link text-muted" onclick="navigateToSection('pro1-section', this)" id="pro1-nav">
             <i class="fas fa-star me-3"></i>Pro 1
             <i class="fas fa-lock ms-auto" id="pro1-lock"></i>
           </a>
         </li>
-
+        
         <li class="sidenav-item">
           <a class="sidenav-link text-muted" onclick="navigateToSection('pro2-section', this)" id="pro2-nav">
             <i class="fas fa-trophy me-3"></i>Pro 2
             <i class="fas fa-lock ms-auto" id="pro2-lock"></i>
           </a>
         </li>
-
+        
         <li class="sidenav-item">
           <a class="sidenav-link text-muted" onclick="navigateToSection('pro3-section', this)" id="pro3-nav">
             <i class="fas fa-crown me-3"></i>Pro 3
             <i class="fas fa-lock ms-auto" id="pro3-lock"></i>
           </a>
         </li>
-
+        
         <hr>
-
+        
         <li class="sidenav-item">
           <a class="sidenav-link" onclick="navigateToSection('network-section', this)">
             <i class="fas fa-users me-3"></i>Network
           </a>
         </li>
-
+        
         <li class="sidenav-item">
           <a class="sidenav-link" onclick="navigateToSection('support-section', this)">
             <i class="fas fa-life-ring me-3"></i>Support
           </a>
         </li>
-
+        
         <!-- Admin Section -->
         <div id="adminSection" style="display: none;">
           <hr>
@@ -225,15 +195,15 @@
             </a>
           </li>
         </div>
-
+        
         <hr>
-
+        
         <li class="sidenav-item">
           <a class="sidenav-link" onclick="openProfileModal()">
             <i class="fas fa-user me-3"></i>My Profile
           </a>
         </li>
-
+        
         <li class="sidenav-item">
           <a class="sidenav-link" id="logoutBtn">
             <i class="fas fa-sign-out-alt me-3"></i>Logout
@@ -639,32 +609,23 @@
         </div>
         <div class="modal-body">
           <form id="profileForm">
-            <!-- Display Name -->
             <div class="form-outline mb-3">
               <input type="text" id="profileDisplayName" class="form-control" />
               <label class="form-label" for="profileDisplayName">Display Name</label>
             </div>
-
-            <!-- Email (readonly) -->
             <div class="form-outline mb-3">
               <input type="email" id="profileEmail" class="form-control" readonly />
               <label class="form-label" for="profileEmail">Email Address</label>
               <div class="form-text">Email cannot be changed</div>
             </div>
-
-            <!-- Member Since -->
             <div class="form-outline mb-3">
               <input type="text" id="profileMemberSince" class="form-control" readonly />
               <label class="form-label" for="profileMemberSince">Member Since</label>
             </div>
-
-            <!-- Current Plan -->
             <div class="form-outline mb-4">
               <input type="text" id="profileCurrentPlan" class="form-control" readonly />
               <label class="form-label" for="profileCurrentPlan">Current Plan</label>
             </div>
-
-            <!-- Email Verification Status -->
             <div class="mb-3">
               <div class="form-check">
                 <input class="form-check-input" type="checkbox" id="emailVerified" disabled />
@@ -694,9 +655,8 @@
   <script src="js/mdb.umd.min.js"></script>
   
   <script>
-    // Initialize MDB components after DOM loads
+    // Initialize MDB components
     document.addEventListener('DOMContentLoaded', function() {
-      // Initialize all MDB components
       if (typeof mdb !== 'undefined') {
         // Initialize sidenav
         const sidenavEl = document.getElementById('main-sidenav');
@@ -704,33 +664,30 @@
           window.sidenavInstance = new mdb.Sidenav(sidenavEl);
         }
         
-        // Initialize all dropdowns
-        const dropdowns = document.querySelectorAll('[data-mdb-dropdown-init]');
-        dropdowns.forEach(dropdown => {
+        // Initialize dropdowns
+        document.querySelectorAll('[data-mdb-dropdown-init]').forEach(dropdown => {
           new mdb.Dropdown(dropdown);
         });
-
-        // Initialize all modals
-        const modals = document.querySelectorAll('.modal');
-        modals.forEach(modal => {
+        
+        // Initialize modals
+        document.querySelectorAll('.modal').forEach(modal => {
           new mdb.Modal(modal);
         });
         
-        // Initialize all ripples
+        // Initialize ripples
         document.querySelectorAll('[data-mdb-ripple-init]').forEach(element => {
           new mdb.Ripple(element);
         });
       }
     });
     
-    // Toggle sidenav for mobile
+    // Navigation functions
     function toggleSidenav() {
       if (window.sidenavInstance) {
         window.sidenavInstance.toggle();
       }
     }
     
-    // Navigation function
     function navigateToSection(sectionId, linkElement) {
       // Hide all sections
       document.querySelectorAll('section').forEach(s => s.style.display = 'none');
@@ -738,7 +695,7 @@
       // Remove active class from all links
       document.querySelectorAll('.sidenav-link').forEach(l => l.classList.remove('active'));
       
-      // Show the target section
+      // Show target section
       const section = document.getElementById(sectionId);
       if (section) {
         section.style.display = 'block';
@@ -749,20 +706,19 @@
         linkElement.classList.add('active');
       }
       
-      // Close sidenav on mobile after navigation
+      // Close sidenav on mobile
       if (window.innerWidth < 992 && window.sidenavInstance) {
         window.sidenavInstance.hide();
       }
     }
     
-    // Make functions global
+    // Make functions globally available
     window.navigateToSection = navigateToSection;
     window.toggleSidenav = toggleSidenav;
   </script>
 
   <!-- Firebase and main functionality -->
   <script type="module">
-    // Import Firebase functions
     import { initializeApp } from 'https://www.gstatic.com/firebasejs/10.7.1/firebase-app.js';
     import { 
       getAuth, 
@@ -772,7 +728,6 @@
       sendEmailVerification
     } from 'https://www.gstatic.com/firebasejs/10.7.1/firebase-auth.js';
 
-    // Firebase configuration
     const firebaseConfig = {
       apiKey: "AIzaSyBddP6AW0CG6xyJ4r7_4q_ZZ_6mnH0kjsE",
       authDomain: "prosnme.firebaseapp.com",
@@ -803,7 +758,6 @@
     function loadUserData(user) {
       const displayName = user.displayName || user.email.split('@')[0];
       
-      // Update all user display elements
       document.getElementById('sidebarUserName').textContent = displayName;
       document.getElementById('sidebarUserEmail').textContent = user.email;
       document.getElementById('navbarUserName').textContent = displayName;
@@ -814,7 +768,6 @@
           new Date(user.metadata.creationTime).toLocaleDateString();
       }
 
-      // Store user registration for admin management
       storeUserRegistration(user);
 
       isAdmin = ADMIN_USERS.includes(user.email);
@@ -910,13 +863,11 @@
       const user = auth.currentUser;
       if (!user) return;
       
-      // Populate modal with current user data
       document.getElementById('profileDisplayName').value = user.displayName || '';
       document.getElementById('profileEmail').value = user.email;
       document.getElementById('profileMemberSince').value = 
         user.metadata.creationTime ? new Date(user.metadata.creationTime).toLocaleDateString() : 'Unknown';
       
-      // Set current plan
       let planText = 'Free';
       switch (currentUserMembership) {
         case MEMBERSHIP_LEVELS.PRO1: planText = 'Pro 1'; break;
@@ -925,13 +876,11 @@
       }
       document.getElementById('profileCurrentPlan').value = planText;
       
-      // Set email verification status
       const emailVerifiedCheckbox = document.getElementById('emailVerified');
       const verificationSection = document.getElementById('verificationSection');
       emailVerifiedCheckbox.checked = user.emailVerified;
       verificationSection.style.display = user.emailVerified ? 'none' : 'block';
       
-      // Show modal
       const modal = new mdb.Modal(document.getElementById('profileModal'));
       modal.show();
     };
@@ -943,22 +892,18 @@
       const displayName = document.getElementById('profileDisplayName').value.trim();
       
       try {
-        // Update Firebase profile
         await updateProfile(user, {
           displayName: displayName
         });
         
-        // Update UI elements with new display name
         const displayNameToShow = displayName || user.email.split('@')[0];
         document.getElementById('sidebarUserName').textContent = displayNameToShow;
         document.getElementById('navbarUserName').textContent = displayNameToShow;
         document.getElementById('welcomeUserName').textContent = displayNameToShow;
         
-        // Close modal
         const modal = mdb.Modal.getInstance(document.getElementById('profileModal'));
         modal.hide();
         
-        // Show success message
         showAlert('Profile updated successfully!', 'success');
         
       } catch (error) {
@@ -980,9 +925,7 @@
       }
     };
 
-    // Helper function to show alerts
     function showAlert(message, type = 'info') {
-      // Create alert element
       const alertDiv = document.createElement('div');
       alertDiv.className = `alert alert-${type} alert-dismissible fade show position-fixed`;
       alertDiv.style.cssText = 'top: 80px; right: 20px; z-index: 9999; min-width: 300px;';
@@ -993,10 +936,8 @@
       
       document.body.appendChild(alertDiv);
       
-      // Initialize the alert dismissible
       new mdb.Alert(alertDiv);
       
-      // Auto-remove after 5 seconds
       setTimeout(() => {
         if (alertDiv.parentNode) {
           alertDiv.remove();
@@ -1059,7 +1000,6 @@
       userMemberships[userId] = newLevel;
       localStorage.setItem('userMemberships', JSON.stringify(userMemberships));
       
-      // If changing current user's membership
       if (auth.currentUser && auth.currentUser.uid === userId) {
         currentUserMembership = newLevel;
         updateMembershipUI();
@@ -1068,7 +1008,6 @@
       showAlert('Membership updated successfully!', 'success');
     };
 
-    // Store user registration when they log in
     function storeUserRegistration(user) {
       const registeredUsers = JSON.parse(localStorage.getItem('registeredUsers') || '[]');
       const userExists = registeredUsers.find(u => u.uid === user.uid);
@@ -1084,7 +1023,6 @@
       }
     }
 
-    // Event listeners
     document.getElementById('logoutBtn').addEventListener('click', async (e) => {
       e.preventDefault();
       try {
@@ -1096,14 +1034,12 @@
       }
     });
 
-    // Support form
     document.getElementById('supportForm').addEventListener('submit', function(e) {
       e.preventDefault();
       showAlert('Support message sent! We\'ll respond within 24 hours.', 'success');
       this.reset();
     });
     
-    // Make showAlert global for other functions
     window.showAlert = showAlert;
   </script>
 </body>
