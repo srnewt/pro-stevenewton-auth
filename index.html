@@ -18,129 +18,315 @@
   <style>
     body {
       font-family: 'Inter', sans-serif;
-      background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+      background-color: #f5f5f5;
       min-height: 100vh;
       display: flex;
       align-items: center;
       justify-content: center;
     }
     
-    .login-card {
-      max-width: 400px;
+    .login-container {
+      display: flex;
+      max-width: 900px;
       width: 100%;
       margin: 20px;
+      background: white;
+      border-radius: 0.5rem;
+      overflow: hidden;
+      box-shadow: 0 10px 40px 0 rgba(0,0,0,.1);
     }
     
-    .brand-logo {
-      max-width: 80px;
-      margin-bottom: 20px;
+    .login-sidebar {
+      background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+      padding: 3rem;
+      color: white;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      text-align: center;
+      min-width: 350px;
+    }
+    
+    .login-sidebar .brand-logo {
+      max-width: 100px;
+      margin-bottom: 2rem;
+      filter: brightness(0) invert(1);
+    }
+    
+    .login-sidebar h2 {
+      font-weight: 600;
+      margin-bottom: 1rem;
+    }
+    
+    .login-sidebar p {
+      opacity: 0.9;
+      line-height: 1.6;
+    }
+    
+    .login-content {
+      flex: 1;
+      padding: 3rem;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+    }
+    
+    .login-header {
+      margin-bottom: 2rem;
+    }
+    
+    .login-header h3 {
+      font-weight: 600;
+      color: #2c3e50;
+      margin-bottom: 0.5rem;
+    }
+    
+    .login-header p {
+      color: #6c757d;
     }
     
     .form-outline {
       margin-bottom: 1.5rem;
     }
     
+    .form-label {
+      font-weight: 500;
+      color: #495057;
+      margin-bottom: 0.5rem;
+    }
+    
+    .form-control {
+      border: 1px solid #dee2e6;
+      border-radius: 0.25rem;
+      padding: 0.75rem 1rem;
+    }
+    
+    .form-control:focus {
+      border-color: #667eea;
+      box-shadow: 0 0 0 0.2rem rgba(102, 126, 234, 0.25);
+    }
+    
+    .btn-primary {
+      background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+      border: none;
+      padding: 0.75rem 2rem;
+      font-weight: 500;
+      width: 100%;
+      border-radius: 0.25rem;
+      transition: all 0.3s ease;
+    }
+    
+    .btn-primary:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 7px 14px rgba(0,0,0,0.1);
+    }
+    
+    .btn-success {
+      background: linear-gradient(135deg, #48c774 0%, #3abb67 100%);
+      border: none;
+      padding: 0.75rem 2rem;
+      font-weight: 500;
+      width: 100%;
+      border-radius: 0.25rem;
+    }
+    
+    .btn-warning {
+      background: linear-gradient(135deg, #ffdd57 0%, #ffc107 100%);
+      border: none;
+      padding: 0.75rem 2rem;
+      font-weight: 500;
+      width: 100%;
+      border-radius: 0.25rem;
+      color: #333;
+    }
+    
     .alert {
       margin-top: 1rem;
+      border: none;
+      border-radius: 0.25rem;
+    }
+    
+    .divider {
+      display: flex;
+      align-items: center;
+      text-align: center;
+      margin: 2rem 0;
+    }
+    
+    .divider::before,
+    .divider::after {
+      content: '';
+      flex: 1;
+      border-bottom: 1px solid #dee2e6;
+    }
+    
+    .divider span {
+      padding: 0 1rem;
+      color: #6c757d;
+      font-size: 0.875rem;
+    }
+    
+    .form-check-label {
+      color: #495057;
+      font-size: 0.875rem;
+    }
+    
+    .form-links {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 1.5rem;
+    }
+    
+    .form-links a {
+      color: #667eea;
+      text-decoration: none;
+      font-size: 0.875rem;
+      transition: color 0.3s ease;
+    }
+    
+    .form-links a:hover {
+      color: #764ba2;
+      text-decoration: underline;
+    }
+    
+    .switch-form {
+      text-align: center;
+      margin-top: 1.5rem;
+      color: #6c757d;
+      font-size: 0.875rem;
+    }
+    
+    .switch-form a {
+      color: #667eea;
+      text-decoration: none;
+      font-weight: 500;
+    }
+    
+    .switch-form a:hover {
+      text-decoration: underline;
+    }
+    
+    @media (max-width: 768px) {
+      .login-sidebar {
+        display: none;
+      }
+      
+      .login-content {
+        padding: 2rem;
+      }
+      
+      .login-container {
+        margin: 10px;
+      }
     }
   </style>
 </head>
 <body>
-  <div class="login-card">
-    <div class="card shadow-lg">
-      <div class="card-body p-5">
-        <!-- Logo and Title -->
-        <div class="text-center mb-4">
-          <img src="img/srn.png" alt="Logo" class="brand-logo" />
-          <h3 class="mt-3">Welcome Back</h3>
-          <p class="text-muted">Sign in to access your sales training</p>
+  <div class="login-container">
+    <!-- Sidebar with branding -->
+    <div class="login-sidebar">
+      <img src="img/srn.png" alt="Logo" class="brand-logo" />
+      <h2>Sales Training Pro</h2>
+      <p>Master the art of sales with our comprehensive training platform. Access exclusive content, track your progress, and connect with professionals.</p>
+    </div>
+    
+    <!-- Main login content -->
+    <div class="login-content">
+      <!-- Login Form -->
+      <form id="loginForm">
+        <div class="login-header">
+          <h3>Welcome Back</h3>
+          <p>Sign in to continue to your dashboard</p>
         </div>
 
-        <!-- Login Form -->
-        <form id="loginForm">
-          <div class="form-outline mb-4">
-            <input type="email" id="loginEmail" class="form-control" required />
-            <label class="form-label" for="loginEmail">Email address</label>
+        <div class="form-outline">
+          <input type="email" id="loginEmail" class="form-control" required />
+          <label class="form-label" for="loginEmail">Email address</label>
+        </div>
+
+        <div class="form-outline">
+          <input type="password" id="loginPassword" class="form-control" required />
+          <label class="form-label" for="loginPassword">Password</label>
+        </div>
+
+        <div class="form-links">
+          <div class="form-check">
+            <input class="form-check-input" type="checkbox" value="" id="rememberMe" />
+            <label class="form-check-label" for="rememberMe">Remember me</label>
           </div>
+          <a href="#" onclick="showResetPassword()">Forgot password?</a>
+        </div>
 
-          <div class="form-outline mb-4">
-            <input type="password" id="loginPassword" class="form-control" required />
-            <label class="form-label" for="loginPassword">Password</label>
-          </div>
+        <button type="submit" class="btn btn-primary" data-mdb-ripple-init>
+          <i class="fas fa-sign-in-alt me-2"></i>Sign in
+        </button>
 
-          <div class="row mb-4">
-            <div class="col d-flex justify-content-start">
-              <div class="form-check">
-                <input class="form-check-input" type="checkbox" value="" id="rememberMe" />
-                <label class="form-check-label" for="rememberMe">Remember me</label>
-              </div>
-            </div>
-            <div class="col text-end">
-              <a href="#" onclick="showResetPassword()">Forgot password?</a>
-            </div>
-          </div>
+        <div class="switch-form">
+          Don't have an account? <a href="#" onclick="showRegisterForm()">Create one</a>
+        </div>
+      </form>
 
-          <button type="submit" class="btn btn-primary btn-block mb-4" data-mdb-ripple-init>
-            <i class="fas fa-sign-in-alt me-2"></i>Sign in
-          </button>
+      <!-- Registration Form (hidden by default) -->
+      <form id="registerForm" style="display: none;">
+        <div class="login-header">
+          <h3>Create Account</h3>
+          <p>Join our sales training community</p>
+        </div>
 
-          <div class="text-center">
-            <p>Don't have an account? <a href="#" onclick="showRegisterForm()">Register</a></p>
-          </div>
-        </form>
+        <div class="form-outline">
+          <input type="text" id="registerName" class="form-control" required />
+          <label class="form-label" for="registerName">Full Name</label>
+        </div>
 
-        <!-- Registration Form (hidden by default) -->
-        <form id="registerForm" style="display: none;">
-          <div class="form-outline mb-4">
-            <input type="text" id="registerName" class="form-control" required />
-            <label class="form-label" for="registerName">Full Name</label>
-          </div>
+        <div class="form-outline">
+          <input type="email" id="registerEmail" class="form-control" required />
+          <label class="form-label" for="registerEmail">Email address</label>
+        </div>
 
-          <div class="form-outline mb-4">
-            <input type="email" id="registerEmail" class="form-control" required />
-            <label class="form-label" for="registerEmail">Email address</label>
-          </div>
+        <div class="form-outline">
+          <input type="password" id="registerPassword" class="form-control" required />
+          <label class="form-label" for="registerPassword">Password</label>
+        </div>
 
-          <div class="form-outline mb-4">
-            <input type="password" id="registerPassword" class="form-control" required />
-            <label class="form-label" for="registerPassword">Password</label>
-          </div>
+        <div class="form-outline">
+          <input type="password" id="registerConfirmPassword" class="form-control" required />
+          <label class="form-label" for="registerConfirmPassword">Confirm Password</label>
+        </div>
 
-          <div class="form-outline mb-4">
-            <input type="password" id="registerConfirmPassword" class="form-control" required />
-            <label class="form-label" for="registerConfirmPassword">Confirm Password</label>
-          </div>
+        <button type="submit" class="btn btn-success" data-mdb-ripple-init>
+          <i class="fas fa-user-plus me-2"></i>Create Account
+        </button>
 
-          <button type="submit" class="btn btn-success btn-block mb-4" data-mdb-ripple-init>
-            <i class="fas fa-user-plus me-2"></i>Create Account
-          </button>
+        <div class="switch-form">
+          Already have an account? <a href="#" onclick="showLoginForm()">Sign in</a>
+        </div>
+      </form>
 
-          <div class="text-center">
-            <p>Already have an account? <a href="#" onclick="showLoginForm()">Sign in</a></p>
-          </div>
-        </form>
+      <!-- Password Reset Form (hidden by default) -->
+      <form id="resetForm" style="display: none;">
+        <div class="login-header">
+          <h3>Reset Password</h3>
+          <p>We'll send you a reset link</p>
+        </div>
+        
+        <div class="form-outline">
+          <input type="email" id="resetEmail" class="form-control" required />
+          <label class="form-label" for="resetEmail">Email address</label>
+        </div>
 
-        <!-- Password Reset Form (hidden by default) -->
-        <form id="resetForm" style="display: none;">
-          <p class="text-muted mb-4">Enter your email address and we'll send you a password reset link.</p>
-          
-          <div class="form-outline mb-4">
-            <input type="email" id="resetEmail" class="form-control" required />
-            <label class="form-label" for="resetEmail">Email address</label>
-          </div>
+        <button type="submit" class="btn btn-warning" data-mdb-ripple-init>
+          <i class="fas fa-envelope me-2"></i>Send Reset Link
+        </button>
 
-          <button type="submit" class="btn btn-warning btn-block mb-4" data-mdb-ripple-init>
-            <i class="fas fa-envelope me-2"></i>Send Reset Link
-          </button>
+        <div class="switch-form">
+          Remember your password? <a href="#" onclick="showLoginForm()">Sign in</a>
+        </div>
+      </form>
 
-          <div class="text-center">
-            <p>Remember your password? <a href="#" onclick="showLoginForm()">Sign in</a></p>
-          </div>
-        </form>
-
-        <!-- Alert Container -->
-        <div id="alertContainer"></div>
-      </div>
+      <!-- Alert Container -->
+      <div id="alertContainer"></div>
     </div>
   </div>
 
