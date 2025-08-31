@@ -42,6 +42,31 @@ body {
   overflow-x: hidden;
   overflow-y: auto; /* Scrollable contents if viewport is shorter than content. */
 }
+/* Add this to your admin.css or in a <style> tag */
+.form-outline .form-label {
+  top: 0.5rem;
+  font-size: 1rem;
+  color: #6c757d;
+  pointer-events: none;
+  transform-origin: 0 0;
+  transition: all 0.2s ease-out;
+}
+
+.form-outline .form-control:focus ~ .form-label,
+.form-outline .form-control:not(:placeholder-shown) ~ .form-label {
+  color: #0d6efd;
+  font-size: 0.85rem;
+  transform: translateY(-1.5rem);
+  background: white;
+  padding: 0 0.25rem;
+}
+
+/* Ensure labels start in correct position when fields have values */
+.form-outline .form-control:not(:placeholder-shown) ~ .form-label {
+  transform: translateY(-1.5rem);
+  font-size: 0.85rem;
+  color: #6c757d;
+}
 
 .inter-hero {
   font-family: "Inter", serif;

@@ -11,8 +11,12 @@
     rel="stylesheet"
     href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css"
   />
-  <!-- MDB CSS -->
-  <link rel="stylesheet" href="css/mdb.min.css" />
+<!-- MDB core CSS -->
+<link rel="stylesheet" href="css/mdb.min.css" />
+<!-- Custom styles -->
+<link rel="stylesheet" href="css/admin.css" />
+<!-- Modern Overrides -->
+<link rel="stylesheet" href="css/modern-overrides.css" />
   <style>
     body {
       background: linear-gradient(135deg, #1e3c72 0%, #2a5298 100%);
@@ -157,7 +161,8 @@
       getAuth, 
       signInWithEmailAndPassword, 
       createUserWithEmailAndPassword,
-      onAuthStateChanged 
+      onAuthStateChanged,
+      sendEmailVerification
     } from 'https://www.gstatic.com/firebasejs/10.7.1/firebase-auth.js';
 
     // Your Firebase configuration
@@ -287,10 +292,14 @@
       }
 
       try {
+        // Create user
         const userCredential = await createUserWithEmailAndPassword(auth, email, password);
         const user = userCredential.user;
-        
-        showAlert('Account created successfully! Redirecting...', 'success');
+
+        // Send verification email
+        await sendEmailVerification(user);
+
+        showAlert('Welcome! Check your email to verify your account for full security.', 'info');
         
         // Redirect after short delay
         setTimeout(() => {
