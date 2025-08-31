@@ -346,6 +346,28 @@
       background-color: var(--hover-bg);
       color: var(--text-primary);
     }
+    
+    /* Fix MDB input label overlap */
+    .form-outline .form-control:focus ~ .form-label,
+    .form-outline .form-control:not(:placeholder-shown) ~ .form-label {
+      transform: translateY(-1.2rem) scale(0.8) !important;
+      background-color: #FFFFFF !important;
+      padding: 0 0.5rem !important;
+      color: var(--text-secondary) !important;
+    }
+    
+    .form-outline .form-control:focus ~ .form-label {
+      color: #8950FC !important;
+    }
+    
+    .form-outline .form-label {
+      position: absolute !important;
+      top: 0.75rem !important;
+      left: 0.75rem !important;
+      transition: all 0.2s ease-in-out !important;
+      pointer-events: none !important;
+      color: var(--text-secondary) !important;
+    }
   </style>
 </head>
 
@@ -1148,6 +1170,11 @@
         document.querySelectorAll('[data-mdb-ripple-init]').forEach(element => {
           new mdb.Ripple(element);
         });
+        
+        // Initialize input fields properly
+        document.querySelectorAll('.form-outline').forEach(formOutline => {
+          new mdb.Input(formOutline).init();
+        });
       }
     });
     
@@ -1438,6 +1465,13 @@
       
       const modal = new mdb.Modal(document.getElementById('profileModal'));
       modal.show();
+      
+      // Reinitialize form inputs in modal
+      setTimeout(() => {
+        document.querySelectorAll('#profileModal .form-outline').forEach(formOutline => {
+          new mdb.Input(formOutline).update();
+        });
+      }, 100);
     };
 
     window.saveProfile = async function() {
