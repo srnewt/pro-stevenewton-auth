@@ -16,20 +16,22 @@
   <link rel="stylesheet" href="css/modern-overrides.css"/>
   
   <style>
-    /* Modern light color palette */
+    /* Clean Metronic-inspired palette */
     :root {
-      --primary-color: #6366f1;
-      --primary-light: #818cf8;
-      --primary-dark: #4f46e5;
-      --success-color: #10b981;
-      --warning-color: #f59e0b;
-      --danger-color: #ef4444;
-      --info-color: #3b82f6;
-      --light-bg: #f8fafc;
+      --primary-color: #3F4254;
+      --primary-light: #696A7C;
+      --primary-dark: #1E1E2D;
+      --success-color: #1BC5BD;
+      --warning-color: #FFA800;
+      --danger-color: #F64E60;
+      --info-color: #8950FC;
+      --light-bg: #F3F6F9;
       --card-bg: #ffffff;
-      --text-primary: #1e293b;
-      --text-secondary: #64748b;
-      --border-color: #e2e8f0;
+      --text-primary: #181C32;
+      --text-secondary: #B5B5C3;
+      --text-muted: #A1A5B7;
+      --border-color: #EFF2F5;
+      --hover-bg: #F3F6F9;
     }
     
     body {
@@ -81,20 +83,38 @@
     
     /* Modern button styles */
     .btn {
-      border-radius: 0.5rem;
+      border-radius: 0.475rem;
       font-weight: 500;
-      padding: 0.625rem 1.25rem;
+      padding: 0.55rem 1.5rem;
       transition: all 0.2s ease;
+      font-size: 13px;
+    }
+    
+    .btn-sm {
+      padding: 0.45rem 1rem;
+      font-size: 12px;
+    }
+    
+    .btn-light {
+      background-color: var(--light-bg);
+      border-color: var(--light-bg);
+      color: var(--text-secondary);
+    }
+    
+    .btn-light:hover {
+      background-color: #E4E6EF;
+      border-color: #E4E6EF;
+      color: var(--text-primary);
     }
     
     .btn-primary {
-      background-color: var(--primary-color);
-      border-color: var(--primary-color);
+      background-color: var(--info-color);
+      border-color: var(--info-color);
     }
     
     .btn-primary:hover {
-      background-color: var(--primary-dark);
-      border-color: var(--primary-dark);
+      background-color: #7337EE;
+      border-color: #7337EE;
       transform: translateY(-1px);
     }
     
@@ -109,13 +129,13 @@
     }
     
     .btn-outline-primary {
-      color: var(--primary-color);
-      border-color: var(--primary-color);
+      color: var(--info-color);
+      border-color: var(--info-color);
     }
     
     .btn-outline-primary:hover {
-      background-color: var(--primary-color);
-      border-color: var(--primary-color);
+      background-color: var(--info-color);
+      border-color: var(--info-color);
     }
     
     /* Badge styles */
@@ -126,7 +146,7 @@
     }
     
     .bg-primary {
-      background-color: var(--primary-color) !important;
+      background-color: var(--info-color) !important;
     }
     
     .bg-success {
@@ -143,15 +163,14 @@
     
     /* Icon styles */
     .icon-stat {
-      width: 48px;
-      height: 48px;
+      width: 50px;
+      height: 50px;
       display: flex;
       align-items: center;
       justify-content: center;
       border-radius: 0.5rem;
       background-color: var(--light-bg);
-      color: var(--primary-color);
-      margin-bottom: 1rem;
+      color: var(--text-primary);
     }
     
     /* Full-height iframe */
@@ -187,19 +206,25 @@
     .sidenav-link {
       color: var(--text-secondary);
       transition: all 0.2s ease;
-      border-radius: 0.5rem;
+      border-radius: 0.375rem;
       margin: 0.125rem 0.5rem;
+      padding: 0.75rem 1rem;
     }
     
     .sidenav-link:hover {
-      background-color: var(--light-bg);
-      color: var(--primary-color);
+      background-color: var(--hover-bg);
+      color: var(--text-primary);
     }
     
     .sidenav-link.active {
-      background-color: rgba(99, 102, 241, 0.1);
-      color: var(--primary-color);
-      font-weight: 500;
+      background-color: var(--hover-bg);
+      color: var(--text-primary);
+      font-weight: 600;
+    }
+    
+    .sidenav-link i {
+      width: 20px;
+      text-align: center;
     }
     
     .sidenav-subheading {
@@ -258,7 +283,7 @@
     }
     
     .text-primary {
-      color: var(--primary-color) !important;
+      color: var(--info-color) !important;
     }
     
     /* Form controls */
@@ -268,8 +293,8 @@
     }
     
     .form-control:focus, .form-select:focus {
-      border-color: var(--primary-color);
-      box-shadow: 0 0 0 0.2rem rgba(99, 102, 241, 0.25);
+      border-color: var(--info-color);
+      box-shadow: 0 0 0 0.2rem rgba(137, 80, 252, 0.15);
     }
     
     /* Table styles */
@@ -294,8 +319,8 @@
     }
     
     .dropdown-item:hover {
-      background-color: var(--light-bg);
-      color: var(--primary-color);
+      background-color: var(--hover-bg);
+      color: var(--text-primary);
     }
   </style>
 </head>
@@ -454,15 +479,15 @@
       <!-- Welcome Card -->
       <div class="row mb-4">
         <div class="col-12">
-          <div class="card border-0" style="background: linear-gradient(135deg, var(--primary-color), var(--primary-light));">
-            <div class="card-body text-white py-4">
+          <div class="card border-0">
+            <div class="card-body py-4">
               <div class="d-flex align-items-center">
-                <div class="icon-stat bg-white bg-opacity-25 me-3">
-                  <i class="fas fa-hand-wave fa-lg text-white"></i>
+                <div class="icon-stat me-3" style="background-color: rgba(137, 80, 252, 0.1);">
+                  <i class="fas fa-hand-wave fa-lg" style="color: var(--info-color);"></i>
                 </div>
                 <div>
-                  <h4 class="mb-1">Welcome back, <span id="welcomeUserName">User</span>!</h4>
-                  <p class="mb-0 opacity-90">Continue your sales training journey and track your progress.</p>
+                  <h4 class="mb-1 text-dark">Welcome back, <span id="welcomeUserName">User</span>!</h4>
+                  <p class="mb-0 text-muted">Continue your sales training journey and track your progress.</p>
                 </div>
               </div>
             </div>
@@ -510,20 +535,20 @@
             </div>
             <div class="card-body">
               <div class="d-flex align-items-center mb-3">
-                <div class="icon-stat me-3" style="background-color: rgba(99, 102, 241, 0.1);">
-                  <i class="fas fa-book-reader" style="color: var(--primary-color);"></i>
+                <div class="icon-stat me-3" style="background-color: rgba(137, 80, 252, 0.1);">
+                  <i class="fas fa-book-reader" style="color: var(--info-color);"></i>
                 </div>
                 <div>
-                  <h4 class="mb-0 fw-bold" style="color: var(--primary-color);">5</h4>
+                  <h4 class="mb-0 fw-bold" style="color: var(--text-primary);">5</h4>
                   <p class="text-muted small mb-0">Content Accessed</p>
                 </div>
               </div>
               <div class="d-flex align-items-center">
-                <div class="icon-stat me-3" style="background-color: rgba(16, 185, 129, 0.1);">
+                <div class="icon-stat me-3" style="background-color: rgba(27, 197, 189, 0.1);">
                   <i class="fas fa-chart-pie" style="color: var(--success-color);"></i>
                 </div>
                 <div>
-                  <h4 class="mb-0 fw-bold" style="color: var(--success-color);">25%</h4>
+                  <h4 class="mb-0 fw-bold" style="color: var(--text-primary);">25%</h4>
                   <p class="text-muted small mb-0">Completion Rate</p>
                 </div>
               </div>
@@ -537,12 +562,12 @@
         <div class="col-md-4 mb-3">
           <div class="card h-100 border-0 hover-lift">
             <div class="card-body text-center py-4">
-              <div class="icon-stat mx-auto" style="background-color: rgba(245, 158, 11, 0.1);">
+              <div class="icon-stat mx-auto" style="background-color: rgba(255, 168, 0, 0.1);">
                 <i class="fas fa-bullhorn fa-lg" style="color: var(--warning-color);"></i>
               </div>
               <h6 class="fw-semibold mb-2">Latest Announcements</h6>
               <p class="text-muted small mb-3">Stay updated with news</p>
-              <button class="btn btn-sm btn-outline-secondary" onclick="navigateToSection('announcements-section')">View All</button>
+              <button class="btn btn-sm btn-light" onclick="navigateToSection('announcements-section')">View All</button>
             </div>
           </div>
         </div>
@@ -550,12 +575,12 @@
         <div class="col-md-4 mb-3">
           <div class="card h-100 border-0 hover-lift">
             <div class="card-body text-center py-4">
-              <div class="icon-stat mx-auto" style="background-color: rgba(59, 130, 246, 0.1);">
+              <div class="icon-stat mx-auto" style="background-color: rgba(137, 80, 252, 0.1);">
                 <i class="fas fa-book-open fa-lg" style="color: var(--info-color);"></i>
               </div>
               <h6 class="fw-semibold mb-2">Content Library</h6>
               <p class="text-muted small mb-3">Training materials</p>
-              <button class="btn btn-sm btn-outline-secondary" onclick="navigateToSection('content-section')">Browse</button>
+              <button class="btn btn-sm btn-light" onclick="navigateToSection('content-section')">Browse</button>
             </div>
           </div>
         </div>
@@ -563,12 +588,12 @@
         <div class="col-md-4 mb-3">
           <div class="card h-100 border-0 hover-lift">
             <div class="card-body text-center py-4">
-              <div class="icon-stat mx-auto" style="background-color: rgba(16, 185, 129, 0.1);">
+              <div class="icon-stat mx-auto" style="background-color: rgba(27, 197, 189, 0.1);">
                 <i class="fas fa-user-friends fa-lg" style="color: var(--success-color);"></i>
               </div>
               <h6 class="fw-semibold mb-2">Network</h6>
               <p class="text-muted small mb-3">Connect with peers</p>
-              <button class="btn btn-sm btn-outline-secondary" onclick="navigateToSection('network-section')">Join</button>
+              <button class="btn btn-sm btn-light" onclick="navigateToSection('network-section')">Join</button>
             </div>
           </div>
         </div>
@@ -661,7 +686,7 @@
     <!-- SALES FUNDAMENTALS PAGE -->
     <section id="sales-fundamentals-page" style="display: none;">
       <div class="d-flex align-items-center mb-4">
-        <button class="btn btn-outline-secondary btn-sm me-3" onclick="navigateToSection('content-section')">
+        <button class="btn btn-light btn-sm me-3" onclick="navigateToSection('content-section')">
           <i class="fas fa-arrow-left me-1"></i>Back
         </button>
         <h2><i class="fas fa-graduation-cap me-2"></i>Sales Fundamentals</h2>
@@ -688,7 +713,7 @@
     <!-- INTRO TO CRM PAGE -->
     <section id="intro-crm-page" style="display: none;">
       <div class="d-flex align-items-center mb-4">
-        <button class="btn btn-outline-secondary btn-sm me-3" onclick="navigateToSection('content-section')">
+        <button class="btn btn-light btn-sm me-3" onclick="navigateToSection('content-section')">
           <i class="fas fa-arrow-left me-1"></i>Back
         </button>
         <h2><i class="fas fa-database me-2"></i>Introduction to CRM</h2>
