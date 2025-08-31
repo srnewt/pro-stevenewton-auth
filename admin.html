@@ -347,26 +347,27 @@
       color: var(--text-primary);
     }
     
-    /* Fix MDB input label overlap */
-    .form-outline .form-control:focus ~ .form-label,
-    .form-outline .form-control:not(:placeholder-shown) ~ .form-label {
-      transform: translateY(-1.2rem) scale(0.8) !important;
+    /* Standard Bootstrap input styling */
+    .form-label {
+      font-weight: 500 !important;
+      color: var(--text-secondary) !important;
+      margin-bottom: 0.5rem !important;
+      font-size: 0.875rem !important;
+    }
+    
+    .form-control {
+      border: 1px solid #EFF2F5 !important;
+      border-radius: 0.475rem !important;
+      padding: 0.75rem 1rem !important;
+      font-size: 0.875rem !important;
+      transition: border-color 0.15s ease !important;
       background-color: #FFFFFF !important;
-      padding: 0 0.5rem !important;
-      color: var(--text-secondary) !important;
     }
     
-    .form-outline .form-control:focus ~ .form-label {
-      color: #8950FC !important;
-    }
-    
-    .form-outline .form-label {
-      position: absolute !important;
-      top: 0.75rem !important;
-      left: 0.75rem !important;
-      transition: all 0.2s ease-in-out !important;
-      pointer-events: none !important;
-      color: var(--text-secondary) !important;
+    .form-control:focus {
+      border-color: #8950FC !important;
+      box-shadow: 0 0 0 0.2rem rgba(137, 80, 252, 0.15) !important;
+      outline: none !important;
     }
   </style>
 </head>
@@ -1096,22 +1097,22 @@
         </div>
         <div class="modal-body">
           <form id="profileForm">
-            <div class="form-outline mb-3">
-              <input type="text" id="profileDisplayName" class="form-control" />
+            <div class="mb-3">
               <label class="form-label" for="profileDisplayName">Display Name</label>
+              <input type="text" id="profileDisplayName" class="form-control" />
             </div>
-            <div class="form-outline mb-3">
-              <input type="email" id="profileEmail" class="form-control" readonly />
+            <div class="mb-3">
               <label class="form-label" for="profileEmail">Email Address</label>
+              <input type="email" id="profileEmail" class="form-control" readonly />
               <div class="form-text">Email cannot be changed</div>
             </div>
-            <div class="form-outline mb-3">
-              <input type="text" id="profileMemberSince" class="form-control" readonly />
+            <div class="mb-3">
               <label class="form-label" for="profileMemberSince">Member Since</label>
+              <input type="text" id="profileMemberSince" class="form-control" readonly />
             </div>
-            <div class="form-outline mb-4">
-              <input type="text" id="profileCurrentPlan" class="form-control" readonly />
+            <div class="mb-4">
               <label class="form-label" for="profileCurrentPlan">Current Plan</label>
+              <input type="text" id="profileCurrentPlan" class="form-control" readonly />
             </div>
             <div class="mb-3">
               <div class="form-check">
@@ -1169,11 +1170,6 @@
         // Initialize ripples
         document.querySelectorAll('[data-mdb-ripple-init]').forEach(element => {
           new mdb.Ripple(element);
-        });
-        
-        // Initialize input fields properly
-        document.querySelectorAll('.form-outline').forEach(formOutline => {
-          new mdb.Input(formOutline).init();
         });
       }
     });
@@ -1465,13 +1461,6 @@
       
       const modal = new mdb.Modal(document.getElementById('profileModal'));
       modal.show();
-      
-      // Reinitialize form inputs in modal
-      setTimeout(() => {
-        document.querySelectorAll('#profileModal .form-outline').forEach(formOutline => {
-          new mdb.Input(formOutline).update();
-        });
-      }, 100);
     };
 
     window.saveProfile = async function() {

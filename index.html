@@ -52,8 +52,8 @@
         <!-- Logo and Title -->
         <div class="text-center mb-4">
           <img src="img/srn.png" alt="Logo" class="brand-logo" />
-          <h3 class="mt-3">Welcome Back</h3>
-          <p class="text-muted">Sign in to access your sales training</p>
+          <h3 class="mt-3">Howdy</h3>
+          <p class="text-muted">Sign in required for access</p>
         </div>
 
         <!-- Login Form -->
@@ -89,8 +89,36 @@
           </div>
         </form>
 
+        <!-- Registration Password Check Form -->
+        <form id="registerPasswordForm" style="display: none;">
+          <div class="text-center mb-4">
+            <img src="img/srn.png" alt="Logo" class="brand-logo" />
+            <h3 class="mt-3">Howdy</h3>
+            <p class="text-muted">Sign in required for access</p>
+          </div>
+
+          <div class="form-outline mb-4">
+            <input type="password" id="registrationCode" class="form-control" required placeholder="Enter registration password" />
+            <label class="form-label" for="registrationCode">Enter password for registration</label>
+          </div>
+
+          <button type="submit" class="btn btn-success btn-block mb-4" data-mdb-ripple-init>
+            <i class="fas fa-unlock me-2"></i>Continue Registration
+          </button>
+
+          <div class="text-center">
+            <p>Already have an account? <a href="#" onclick="showLoginForm()">Sign in</a></p>
+          </div>
+        </form>
+
         <!-- Registration Form (hidden by default) -->
         <form id="registerForm" style="display: none;">
+          <div class="text-center mb-4">
+            <img src="img/srn.png" alt="Logo" class="brand-logo" />
+            <h3 class="mt-3">Howdy</h3>
+            <p class="text-muted">Sign in required for access</p>
+          </div>
+
           <div class="form-outline mb-4">
             <input type="text" id="registerName" class="form-control" required />
             <label class="form-label" for="registerName">Full Name</label>
@@ -166,6 +194,7 @@
     // Form switching functions
     function showLoginForm() {
       document.getElementById('loginForm').style.display = 'block';
+      document.getElementById('registerPasswordForm').style.display = 'none';
       document.getElementById('registerForm').style.display = 'none';
       document.getElementById('resetForm').style.display = 'none';
       clearAlerts();
@@ -173,6 +202,15 @@
 
     function showRegisterForm() {
       document.getElementById('loginForm').style.display = 'none';
+      document.getElementById('registerPasswordForm').style.display = 'block';
+      document.getElementById('registerForm').style.display = 'none';
+      document.getElementById('resetForm').style.display = 'none';
+      clearAlerts();
+    }
+    
+    function showActualRegisterForm() {
+      document.getElementById('loginForm').style.display = 'none';
+      document.getElementById('registerPasswordForm').style.display = 'none';
       document.getElementById('registerForm').style.display = 'block';
       document.getElementById('resetForm').style.display = 'none';
       clearAlerts();
@@ -180,6 +218,7 @@
 
     function showResetPassword() {
       document.getElementById('loginForm').style.display = 'none';
+      document.getElementById('registerPasswordForm').style.display = 'none';
       document.getElementById('registerForm').style.display = 'none';
       document.getElementById('resetForm').style.display = 'block';
       clearAlerts();
@@ -237,6 +276,20 @@
       if (user) {
         // User is signed in, redirect to admin page
         window.location.href = 'admin.html';
+      }
+    });
+
+    // Registration password form handler
+    document.getElementById('registerPasswordForm').addEventListener('submit', (e) => {
+      e.preventDefault();
+      
+      const registrationCode = document.getElementById('registrationCode').value;
+      
+      if (registrationCode === '101784') {
+        showActualRegisterForm();
+      } else {
+        showAlert('Registration is not allowed.', 'danger');
+        document.getElementById('registrationCode').value = '';
       }
     });
 
