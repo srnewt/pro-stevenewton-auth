@@ -4,8 +4,8 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
   <title>pro.stevenewton.me</title>
-  <!-- MDB v7 core CSS -->
-  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/mdb-ui-kit/7.0.0/mdb.min.css"/>
+  <!-- MDB local CSS -->
+  <link rel="stylesheet" href="css/mdb.min.css"/>
   <!-- Font Awesome -->
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css"/>
   <!-- Google Fonts Inter -->
@@ -57,12 +57,11 @@
     <i class="fas fa-bars"></i>
   </button>
 
-  <!-- MDB v7 Sidenav -->
+  <!-- MDB Sidenav -->
   <nav
     id="main-sidenav"
     class="sidenav bg-white"
     data-mdb-sidenav-init
-    data-mdb-color="dark"
     data-mdb-mode="side"
     data-mdb-hidden="false"
   >
@@ -609,10 +608,93 @@
     </section>
   </main>
 
-  <!-- MDB v7 ES-module bundle -->
-  <script type="module">
-    import { Sidenav, Dropdown, Modal, initMDB } from "https://cdnjs.cloudflare.com/ajax/libs/mdb-ui-kit/7.0.0/mdb.es.min.js";
-    initMDB({ Sidenav, Dropdown, Modal });
+  <!-- Profile Modal -->
+  <div class="modal fade" id="profileModal" tabindex="-1" aria-labelledby="profileModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" id="profileModalLabel">
+            <i class="fas fa-user me-2"></i>My Profile
+          </h5>
+          <button type="button" class="btn-close" data-mdb-dismiss="modal" aria-label="Close"></button>
+        </div>
+        <div class="modal-body">
+          <form id="profileForm">
+            <!-- Display Name -->
+            <div class="form-outline mb-3">
+              <input type="text" id="profileDisplayName" class="form-control" />
+              <label class="form-label" for="profileDisplayName">Display Name</label>
+            </div>
+
+            <!-- Email (readonly) -->
+            <div class="form-outline mb-3">
+              <input type="email" id="profileEmail" class="form-control" readonly />
+              <label class="form-label" for="profileEmail">Email Address</label>
+              <div class="form-text">Email cannot be changed</div>
+            </div>
+
+            <!-- Member Since -->
+            <div class="form-outline mb-3">
+              <input type="text" id="profileMemberSince" class="form-control" readonly />
+              <label class="form-label" for="profileMemberSince">Member Since</label>
+            </div>
+
+            <!-- Current Plan -->
+            <div class="form-outline mb-4">
+              <input type="text" id="profileCurrentPlan" class="form-control" readonly />
+              <label class="form-label" for="profileCurrentPlan">Current Plan</label>
+            </div>
+
+            <!-- Email Verification Status -->
+            <div class="mb-3">
+              <div class="form-check">
+                <input class="form-check-input" type="checkbox" id="emailVerified" disabled />
+                <label class="form-check-label" for="emailVerified">
+                  Email Verified
+                </label>
+              </div>
+              <div id="verificationSection" style="display: none;" class="mt-2">
+                <button type="button" class="btn btn-outline-warning btn-sm" onclick="sendVerificationEmail()">
+                  <i class="fas fa-envelope me-1"></i>Resend Verification Email
+                </button>
+              </div>
+            </div>
+          </form>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-secondary" data-mdb-dismiss="modal">Cancel</button>
+          <button type="button" class="btn btn-primary" onclick="saveProfile()">
+            <i class="fas fa-save me-1"></i>Save Changes
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- MDB local JS -->
+  <script src="js/mdb.umd.min.js"></script>
+  
+  <script>
+    // Initialize MDB components after DOM loads
+    document.addEventListener('DOMContentLoaded', function() {
+      // Initialize sidenav - MDB v8 syntax
+      const sidenavEl = document.getElementById('main-sidenav');
+      if (sidenavEl && typeof mdb !== 'undefined' && mdb.Sidenav) {
+        const sidenav = new mdb.Sidenav(sidenavEl);
+      }
+      
+      // Initialize dropdowns
+      const dropdowns = document.querySelectorAll('[data-mdb-dropdown-toggle]');
+      if (typeof mdb !== 'undefined' && mdb.Dropdown) {
+        dropdowns.forEach(dropdown => new mdb.Dropdown(dropdown));
+      }
+
+      // Initialize modals
+      const modals = document.querySelectorAll('.modal');
+      if (typeof mdb !== 'undefined' && mdb.Modal) {
+        modals.forEach(modal => new mdb.Modal(modal));
+      }
+    });
   </script>
 
   <!-- Firebase and main functionality -->
@@ -622,7 +704,9 @@
     import { 
       getAuth, 
       onAuthStateChanged,
-      signOut 
+      signOut,
+      updateProfile,
+      sendEmailVerification
     } from 'https://www.gstatic.com/firebasejs/10.7.1/firebase-auth.js';
 
     // Firebase configuration
@@ -774,8 +858,99 @@
     };
 
     window.openProfileModal = function() {
-      alert('Profile modal coming soon!');
+      const user = auth.currentUser;
+      if (!user) return;
+      
+      // Populate modal with current user data
+      document.getElementById('profileDisplayName').value = user.displayName || '';
+      document.getElementById('profileEmail').value = user.email;
+      document.getElementById('profileMemberSince').value = 
+        user.metadata.creationTime ? new Date(user.metadata.creationTime).toLocaleDateString() : 'Unknown';
+      
+      // Set current plan
+      let planText = 'Free';
+      switch (currentUserMembership) {
+        case MEMBERSHIP_LEVELS.PRO1: planText = 'Pro 1'; break;
+        case MEMBERSHIP_LEVELS.PRO2: planText = 'Pro 2'; break;
+        case MEMBERSHIP_LEVELS.PRO3: planText = 'Pro 3'; break;
+      }
+      document.getElementById('profileCurrentPlan').value = planText;
+      
+      // Set email verification status
+      const emailVerifiedCheckbox = document.getElementById('emailVerified');
+      const verificationSection = document.getElementById('verificationSection');
+      emailVerifiedCheckbox.checked = user.emailVerified;
+      verificationSection.style.display = user.emailVerified ? 'none' : 'block';
+      
+      // Show modal
+      const modal = new mdb.Modal(document.getElementById('profileModal'));
+      modal.show();
     };
+
+    window.saveProfile = async function() {
+      const user = auth.currentUser;
+      if (!user) return;
+      
+      const displayName = document.getElementById('profileDisplayName').value.trim();
+      
+      try {
+        // Update Firebase profile
+        await updateProfile(user, {
+          displayName: displayName
+        });
+        
+        // Update UI elements with new display name
+        const displayNameToShow = displayName || user.email.split('@')[0];
+        document.getElementById('sidebarUserName').textContent = displayNameToShow;
+        document.getElementById('navbarUserName').textContent = displayNameToShow;
+        document.getElementById('welcomeUserName').textContent = displayNameToShow;
+        
+        // Close modal
+        const modal = mdb.Modal.getInstance(document.getElementById('profileModal'));
+        modal.hide();
+        
+        // Show success message
+        showAlert('Profile updated successfully!', 'success');
+        
+      } catch (error) {
+        console.error('Profile update error:', error);
+        showAlert('Failed to update profile: ' + error.message, 'danger');
+      }
+    };
+
+    window.sendVerificationEmail = async function() {
+      const user = auth.currentUser;
+      if (!user) return;
+      
+      try {
+        await sendEmailVerification(user);
+        showAlert('Verification email sent! Check your inbox.', 'success');
+      } catch (error) {
+        console.error('Verification email error:', error);
+        showAlert('Failed to send verification email: ' + error.message, 'danger');
+      }
+    };
+
+    // Helper function to show alerts (if not already defined)
+    function showAlert(message, type = 'info') {
+      // Create alert element
+      const alertDiv = document.createElement('div');
+      alertDiv.className = `alert alert-${type} alert-dismissible fade show position-fixed`;
+      alertDiv.style.cssText = 'top: 20px; right: 20px; z-index: 9999; min-width: 300px;';
+      alertDiv.innerHTML = `
+        ${message}
+        <button type="button" class="btn-close" data-mdb-dismiss="alert"></button>
+      `;
+      
+      document.body.appendChild(alertDiv);
+      
+      // Auto-remove after 5 seconds
+      setTimeout(() => {
+        if (alertDiv.parentNode) {
+          alertDiv.remove();
+        }
+      }, 5000);
+    }
 
     window.refreshUserList = function() {
       if (!isAdmin) {
